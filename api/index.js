@@ -5,6 +5,10 @@ const app = express();
 import connectDB from "./config/db.js";
 dotenv.config();
 connectDB();
-app.listen(3000, () => {
-  console.log("runnign in server 3000");
+const port = process.env.Port;
+app.listen(port, () => {
+  console.log(`Server run's in Port ${port}`);
+});
+app.use("/", (req, res) => {
+  res.json({ message: "hellword" });
 });
