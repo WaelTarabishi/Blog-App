@@ -7,7 +7,7 @@ const Header = () => {
     return (
         <Navbar className='border-b-2'>
             <Link className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
-                <span className=' text-white bg-gradient-to-r from-cyan-500 to-blue-500   rounded-lg  px-2 py-1 text-center '>Wael's</span>
+                <span className=' text-white bg-gradient-to-r from-cyan-500 to-blue-500   rounded-lg  px-2 py-1 text-center '>Dev's</span>
                 Blog
             </Link>
             <form>
