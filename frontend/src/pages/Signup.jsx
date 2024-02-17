@@ -1,7 +1,7 @@
 
 
 import { Button, Label, TextInput } from 'flowbite-react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Singup = () => {
     return (
@@ -9,7 +9,7 @@ const Singup = () => {
 
             <div className='w-full flex items-center  justify-center md:flex-row  flex-col  gap-4 flex-1 '>
                 <div className='flex flex-col gap-4   justify-center  h-full md:w-auto md:pl-0  w-full    '>
-                    <Link className=' whitespace-nowrap  md:text-4xl  text-3xl font-semibold dark:text-white'>
+                    <Link to='/' className=' whitespace-nowrap  md:text-4xl  text-3xl font-semibold dark:text-white'>
                         <span className=' text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500   rounded-lg  px-2 py-1 text-center '>Dev's</span>
                         Blog
                     </Link>
@@ -41,7 +41,7 @@ const Singup = () => {
                     </form>
                     <div className='text-black text-sm mt-5 flex gap-2'>
                         <span>Have an account?</span>
-                        <Link to='sgin-in' className='text-blue-500 '>Sing In</Link>
+                        <Link to='/sign-in' className='text-blue-500'>Sign In</Link>
                     </div>
                 </div>
             </div>
