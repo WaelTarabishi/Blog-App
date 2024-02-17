@@ -1,7 +1,7 @@
 import User from "../Models/User.Model.js";
 import bcryptjs from "bcryptjs";
-import {} from "module";
-const singup = async (req, res) => {
+import { errorHandler } from "../utils/error.js";
+const singup = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (
     !username ||
@@ -11,19 +11,20 @@ const singup = async (req, res) => {
     email === "" ||
     password === ""
   ) {
-    res.status(400).json({ message: "All fields are required" });
-  }
-  const hashedPassword = bcryptjs.hashSync(password, 10);
-  try {
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
-    await newUser.save();
-    res.json({ message: "user Register" });
-  } catch (err) {
-    res.status(501).json({ message: "already exists" });
+    next(errorHandler(500, "All fields are required"));
+  } else {
+    const hashedPassword = bcryptjs.hashSync(password, 10);
+    try {
+      const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+      });
+      await newUser.save();
+      res.json({ message: "user Register" });
+    } catch (err) {
+      next(err);
+    }
   }
 };
 
