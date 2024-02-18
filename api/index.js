@@ -5,11 +5,13 @@ const app = express();
 import connectDB from "./config/db.js";
 import UserRoutes from "./Routes/UserRoutes.js";
 import authRoute from "./Routes/AuthRoutes.js";
-
+import cookieParser from "cookie-parser";
 dotenv.config();
 connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 const port = process.env.Port;
 app.listen(port, () => {
   console.log(`Server run's in Port ${port}`);
