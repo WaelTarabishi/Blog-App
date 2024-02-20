@@ -44,7 +44,7 @@ const Siginin = () => {
                         <span className=' text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500   rounded-lg  px-2 py-1 text-center '>Dev's</span>
                         Blog
                     </Link>
-                    <p className=' text-black text-sm '>You can sing up with your email and password or with google </p>
+                    <p className='   text-sm '>You can sing up with your email and password or with google </p>
                 </div>
 
                 <div className='flex-[0.5] flex-col  items-center w-full '>
@@ -70,13 +70,13 @@ const Siginin = () => {
                                 onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <Button type="submit"
-                            className=" text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm text-center me-2 mb-2" disabled={isLoading}>
+                            className=" text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm text-center " disabled={isLoading}>
                             {isLoading ? (
                                 <>
                                     <Spinner size="sm" />
                                     <span className='pl-3'>Loading...</span>
                                 </>
-                            ) : "Sign Up"}
+                            ) : "Sign In"}
                         </Button>
                         <Oauth />
                         {isError && (
@@ -85,7 +85,7 @@ const Siginin = () => {
                             </Alert>
                         )}
                     </form>
-                    <div className='text-black text-sm mt-5 flex gap-2 '>
+                    <div className=' text-sm mt-5 flex gap-2 '>
                         <span>Dong Have an account?</span>
                         <Link to='/sign-up' className='text-blue-500'>Sign Up</Link>
                     </div>

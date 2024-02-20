@@ -98,7 +98,7 @@ const Singup = () => {
                             </Alert>
                         )}
                     </form>
-                    <div className='text-black text-sm mt-5 flex gap-2 '>
+                    <div className=' text-sm mt-5 flex gap-2 '>
                         <span>Have an account?</span>
                         <Link to='/sign-in' className='text-blue-500'>Sign In</Link>
                     </div>
