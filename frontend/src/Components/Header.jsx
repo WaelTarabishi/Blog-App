@@ -1,7 +1,7 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon } from 'react-icons/fa';
+import { FaMoon, FaSun } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '../Slices/userApiSlice';
 import { logout } from '../Slices/authSlice';
@@ -12,6 +12,7 @@ const Header = () => {
     const [logOutApiCall] = useLogoutMutation()
     const { userInfo } = useSelector((state) => state.auth);
     const { theme } = useSelector(state => state.theme)
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -38,11 +39,12 @@ const Header = () => {
             <Button className='lg:hidden w-12 h-10 ' color='gray' pill><AiOutlineSearch /></Button>
             <div className='flex  gap-2 md:order-2'>
                 <Button className='w-12 h-10 hidden sm:inline' color='gray' pill onClick={() => { dispatch(toggelTheme(theme)) }}>
-                    <FaMoon />
+                    {theme === "light" ? (<FaMoon />) : (<FaSun />)}
+
                 </Button>
                 {userInfo ? (
                     <Dropdown arrowIcon={false} inline label={
-                        <Avatar rounded>
+                        <Avatar rounded img={"../images/Avatar.png"}>
                             <div className="space-y-1 font-medium dark:text-white">
                                 <div><Link to="/dashboard">{userInfo.name}</Link></div>
                             </div>
