@@ -6,15 +6,25 @@ import asyncHandler from "express-async-handler";
 //@desc Auth user/set token
 //route POST /api/auth
 //@access Public
-const singup = asyncHandler(async (req, res, next) => {
+const signup = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
   const userExists = await User.findOne({ email });
-  if (!username || !email || !password) {
-    next(errorHandler(500, "Fill all fields"));
+  if (!username) {
+    next(errorHandler(400, "UserName field is empty"));
+  }
+  if (!email) {
+    next(errorHandler(400, "Email field is empty"));
+  }
+  if (!password) {
+    next(errorHandler(400, "Password field is empty"));
   }
   if (userExists) {
     next(errorHandler(400, "User already exist"));
   }
+  if (await User.findOne({ username })) {
+    next(errorHandler(400, "UserName is used "));
+  }
+
   const user = await User.create({ username, email, password });
   if (user) {
     generateToken(res, user._id);
@@ -28,4 +38,38 @@ const singup = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { singup };
+//@desc Auth user/set token
+//route POST /api/auth/login
+//@access Public
+const signin = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email) {
+    next(errorHandler(400, "Email field is Empty"));
+  }
+  if (!password) {
+    next(errorHandler(400, "Password field is Empty"));
+  }
+  const user = await User.findOne({ email });
+  if (user && (await user.matchPasswords(password))) {
+    generateToken(res, user._id);
+    res.status(202).json({
+      _id: user._id,
+      name: user.username,
+      email: user.email,
+    });
+  } else {
+    next(errorHandler(400, "User not Found"));
+  }
+});
+//@desc  Log out
+//route POST /api/auth/logout
+//@access Public
+const logout = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "User Logged Out" });
+});
+
+export { signup, signin, logout };

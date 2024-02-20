@@ -1,23 +1,24 @@
-import { Button, Label, TextInput } from 'flowbite-react';
+import { Label, TextInput, Button, Spinner, Alert } from 'flowbite-react';
+import { HiInformationCircle } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCredentials } from '../Slices/authSlice';
 import { useRegisterMutation } from '../Slices/userApiSlice';
+import { Oauth } from '../Components';
 const Singup = () => {
     const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isError, setIsError] = useState('')
+    const [Error, setError] = useState('')
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [register, { isLoading }] = useRegisterMutation();
+    const [register, { isLoading, isError }] = useRegisterMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
-    const handleChange = (e) => {
-    };
+
 
     useEffect(() => {
         if (userInfo) {
@@ -32,12 +33,12 @@ const Singup = () => {
             dispatch(setCredentials({ ...res }));
             navigate('/');
         } catch (err) {
-            setIsError(err?.data?.message || err.error)
-
+            setError(err?.data?.message || err.error)
+            console.log(Error)
         }
     }
     return (
-        <div className="flex min-h-screen justify-center  bg-red   pl-3 pr-3 ">
+        <div className="flex min-h-screen justify-center  bg-red   pl-3 pr-3 " >
 
             <div className='w-full flex items-center  justify-center md:flex-row  flex-col  gap-4 flex-1 '>
                 <div className='flex flex-col gap-4   justify-center  h-full md:w-auto md:pl-0  w-full    '>
@@ -77,18 +78,33 @@ const Singup = () => {
                             <TextInput type='password'
                                 placeholder='Password'
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)} />
+                                onChange={(e) => setPassword(e.target.value)}
+                                min="5"
+                            />
                         </div>
-                        <button type="submit" className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Sign Up</button>
-
+                        <Button type="submit"
+                            className=" text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm text-center " disabled={isLoading}>
+                            {isLoading ? (
+                                <>
+                                    <Spinner size="sm" />
+                                    <span className='pl-3'>Loading...</span>
+                                </>
+                            ) : "Sign Up"}
+                        </Button>
+                        <Oauth />
+                        {isError && (
+                            <Alert icon={HiInformationCircle} color="failure">
+                                {Error}
+                            </Alert>
+                        )}
                     </form>
-                    <div className='text-black text-sm mt-5 flex gap-2'>
+                    <div className='text-black text-sm mt-5 flex gap-2 '>
                         <span>Have an account?</span>
                         <Link to='/sign-in' className='text-blue-500'>Sign In</Link>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 export default Singup

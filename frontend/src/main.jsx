@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
 import { About, Dashborad, Projects, Home, Signin, Signup } from './pages';
+import { ThemeProvider } from "./Components"
 import { Provider } from 'react-redux';
 import store from './sotre.js';
 import './index.css'
@@ -22,7 +23,9 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </React.StrictMode>
   </Provider>
 )
