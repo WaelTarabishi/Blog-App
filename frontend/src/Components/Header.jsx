@@ -6,15 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '../Slices/userApiSlice';
 import { logout } from '../Slices/authSlice';
 import { toggelTheme } from '../Slices/themeSlice';
-
 const Header = () => {
     const dispatch = useDispatch();
     const [logOutApiCall] = useLogoutMutation()
     const { userInfo } = useSelector((state) => state.auth);
     const { theme } = useSelector(state => state.theme)
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const logoutHandleSubmit = async () => {
         try {
             await logOutApiCall().unwrap();
             dispatch(logout());
@@ -43,15 +41,24 @@ const Header = () => {
 
                 </Button>
                 {userInfo ? (
-                    <Dropdown arrowIcon={false} inline label={
-                        <Avatar rounded img={"../images/Avatar.png"}>
-                            <div className="space-y-1 font-medium dark:text-white">
-                                <div><Link to="/dashboard">{userInfo.name}</Link></div>
-                            </div>
-                        </Avatar>}>
+                    <Dropdown
+                        arrowIcon={false}
+                        inline
+                        label={
+                            <Avatar alt='user' img={userInfo.profilePicture} rounded />
+                        }
+                    >
                         <Dropdown.Header>
-                            <span className='block text-sm'>{userInfo.email}</span>
+                            <span className='block text-sm'>@{userInfo.name}</span>
+                            <span className='block text-sm font-medium truncate'>
+                                {userInfo.email}
+                            </span>
                         </Dropdown.Header>
+                        <Link to={'/dashboard?tab=profile'}>
+                            <Dropdown.Item>Profile</Dropdown.Item>
+                        </Link>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={logoutHandleSubmit} >Sign out</Dropdown.Item>
                     </Dropdown>
                 ) : (
 

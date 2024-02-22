@@ -32,6 +32,7 @@ const signup = asyncHandler(async (req, res, next) => {
       _id: user._id,
       name: user.username,
       email: user.email,
+      profilePicture: user.profilePicture,
     });
   } else {
     next(errorHandler(400, "Invalid Data"));
@@ -56,14 +57,46 @@ const signin = asyncHandler(async (req, res, next) => {
       _id: user._id,
       name: user.username,
       email: user.email,
+      profilePicture: user.profilePicture,
     });
   } else {
     next(errorHandler(400, "User not Found"));
   }
 });
+
+//@desc SigninWithGoogle
+//route POST /api/auth/google
+//@access Public
+const signinWithGoogle = asyncHandler(async (req, res, next) => {
+  const { name, email, photoUrl } = req.body;
+  const user = await User.findOne({ email });
+  if (user) {
+    generateToken(res, user._id);
+  } else {
+    const gerneratedPassword =
+      Math.random().toString(36).slice(-8) +
+      Math.random().toString(36).slice(-8);
+    const user = await User.create({
+      username:
+        name.toLowerCase().split(" ").join("") +
+        Math.random().toString(9).slice(-4),
+      email,
+      password: gerneratedPassword,
+      profilePicture: photoUrl,
+    });
+    generateToken(res, user._id);
+  }
+  res.status(202).json({
+    _id: user._id,
+    name: user.username,
+    email: user.email,
+    profilePicture: photoUrl,
+  });
+});
+
 //@desc  Log out
 //route POST /api/auth/logout
-//@access Public
+//@access Private
 const logout = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
@@ -72,4 +105,4 @@ const logout = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "User Logged Out" });
 });
 
-export { signup, signin, logout };
+export { signup, signin, logout, signinWithGoogle };

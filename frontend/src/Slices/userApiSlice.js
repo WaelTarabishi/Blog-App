@@ -1,3 +1,4 @@
+import { EmailAuthCredential } from "firebase/auth";
 import { apiSlice } from "./apiSlice";
 const USERS_URL = "/api/auth";
 
@@ -23,6 +24,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    googlelogin: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/google`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     // update: builder.mutation({
     //   query: (data) => ({
     //     url: `${USERS_URL}/profile`,
@@ -37,5 +45,5 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,
-  // useUpdateMutation,
+  useGoogleloginMutation,
 } = userApiSlice;
