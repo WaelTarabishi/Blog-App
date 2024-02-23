@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { HiArrowSmRight, HiUser } from 'react-icons/hi';
-import { useLogoutMutation } from '../Slices/userApiSlice';
+import { useLogoutMutation } from '../Slices/authApiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../Slices/authSlice';
 const DashSidebar = () => {

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLogoutMutation } from '../Slices/userApiSlice';
+import { useLogoutMutation } from '../Slices/authApiSlice';
 import { logout } from '../Slices/authSlice';
 import { toggelTheme } from '../Slices/themeSlice';
 const Header = () => {

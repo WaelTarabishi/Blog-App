@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { app } from '../firebase';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
-import { useGoogleloginMutation } from '../Slices/userApiSlice';
+import { useGoogleloginMutation } from '../Slices/authApiSlice';
 const Oauth = () => {
     const auth = getAuth(app)
     const [googlelogin, { isLoading }] = useGoogleloginMutation()

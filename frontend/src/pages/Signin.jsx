@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCredentials } from '../Slices/authSlice';
-import { useLoginMutation } from '../Slices/userApiSlice';
+import { useLoginMutation } from '../Slices/authApiSlice';
 import { Oauth } from '../Components';
 const Siginin = () => {
     const [email, setEmail] = useState('');

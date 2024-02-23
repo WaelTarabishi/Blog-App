@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCredentials } from '../Slices/authSlice';
-import { useRegisterMutation } from '../Slices/userApiSlice';
+import { useRegisterMutation } from '../Slices/authApiSlice';
 import { Oauth } from '../Components';
 const Singup = () => {
     const [username, setUserName] = useState('');
