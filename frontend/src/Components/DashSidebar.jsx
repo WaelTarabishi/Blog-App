@@ -1,21 +1,36 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { HiArrowSmRight, HiUser } from 'react-icons/hi';
-import { useDispatch } from 'react-redux';
-import { useLoginMutation } from '../Slices/userApiSlice';
+import { useLogoutMutation } from '../Slices/userApiSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../Slices/authSlice';
 const DashSidebar = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const { userInfo } = useSelector((state) => state.auth);
+    const [logOutApiCall, { isloading }] = useLogoutMutation()
     const location = useLocation()
     const [tab, setTab] = useState('')
+
+    const logoutHandleSubmit = async () => {
+        try {
+            await logOutApiCall().unwrap();
+            dispatch(logout());
+            navigate('/');
+        } catch (err) {
+            console.log(err)
+
+        }
+    }
+
+
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search)
         const tabFromUrl = urlParams.get('tab')
         tabFromUrl && setTab(tabFromUrl)
-
     }, [location.search])
 
-    const dispatch = useDispatch()
-    const [logout, { isloading }] = useLoginMutation()
 
     return (
         <Sidebar className='w-full md:w-56'>
@@ -26,13 +41,12 @@ const DashSidebar = () => {
                             Profile
                         </Sidebar.Item>
                     </Link>
-                    <Sidebar.Item icon={HiArrowSmRight} className="cursor-pointer">
+                    <Sidebar.Item icon={HiArrowSmRight} className="cursor-pointer" onClick={logoutHandleSubmit}>
                         Sign Out
                     </Sidebar.Item>
-
                 </Sidebar.ItemGroup>
             </Sidebar.Items>
-        </Sidebar >
+        </Sidebar>
     )
 }
 

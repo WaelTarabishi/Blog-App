@@ -46,7 +46,7 @@ const Singup = () => {
                         <span className=' text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500   rounded-lg  px-2 py-1 text-center '>Dev's</span>
                         Blog
                     </Link>
-                    <p className=' text-black text-sm '>You can sing up with your email and password or with google </p>
+                    <p className='  text-sm '>You can sing up with your email and password or with google </p>
                 </div>
 
                 <div className='flex-[0.5] flex-col  items-center w-full '>

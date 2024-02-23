@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     profilePicture: {
       type: String,
       default:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Favatar%2F&psig=AOvVaw0kxMbsRHh6SxSRLfHJwNt_&ust=1708701312016000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCiqeGrv4QDFQAAAAAdAAAAABAE",
+        "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1708679540~exp=1708680140~hmac=008202955dea13867a343c7be0db917799d908859bec04fad96cb5791e9bf0b7",
     },
   },
   { timestamps: true }
