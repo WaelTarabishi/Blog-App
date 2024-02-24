@@ -1,20 +1,26 @@
 import jwt from "jsonwebtoken";
-import asyncHandler from "express-async-handler";
 import User from "../Models/User.Model.js";
+import asyncHandler from "express-async-handler";
 import { errorHandler } from "../utils/error.js";
-const protect = async (req, res, next) => {
-  const token = req.cookies.access_token;
+const protect = asyncHandler(async (req, res, next) => {
+  let token;
 
-  if (!token) {
-    return next(errorHandler(401, "Unauthorized"));
-  }
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return next(errorHandler(401, "Unauthorized"));
+  token = req.cookies.jwt;
+  console.log(token);
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.userId).select("-password");
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401);
+      throw new Error("Not authorized, token failed");
     }
-    req.user = user;
-    next();
-  });
-};
+  } else {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
+});
 
 export { protect };

@@ -58,7 +58,7 @@ const Header = () => {
                             <Dropdown.Item>Profile</Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
-                        <Dropdown.Item onClick={logoutHandleSubmit} >Sign out</Dropdown.Item>
+                        <Dropdown.Item onClick={logoutHandleSubmit}  >Sign out</Dropdown.Item>
                     </Dropdown>
                 ) : (
 

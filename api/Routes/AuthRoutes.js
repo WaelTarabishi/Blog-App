@@ -6,6 +6,7 @@ import {
   logout,
   signinWithGoogle,
 } from "../Controllers/AuthControllers.js";
+
 router.post("/", signup);
 router.post("/login", signin);
 router.post("/logout", logout);

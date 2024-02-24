@@ -1,26 +1,33 @@
-import { Button, TextInput } from 'flowbite-react';
+import { Button, Modal, TextInput } from 'flowbite-react';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { app } from '../firebase';
 import { Alert } from 'flowbite-react';
-import { HiInformationCircle } from 'react-icons/hi';
+import { HiInformationCircle, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useUpdateMutation } from '../Slices/userapiSlice';
-
+import { useUpdateMutation, useDeleteUserMutation, useLogoutMutation } from '../Slices/authApiSlice';
+import { setCredentials, logout } from '../Slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const DashProfile = () => {
     const { userInfo } = useSelector((state) => state.auth);
-    const [update, { isLoading, isError }] = useUpdateMutation()
-
+    const [update, { isLoading, isError, isSuccess }] = useUpdateMutation()
+    const [deleteUser] = useDeleteUserMutation()
+    const [logOutApiCall] = useLogoutMutation()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({})
     const [Error, setError] = useState('')
+
+    const [openModal, setOpenModal] = useState(false)
 
     const [imageFile, setImageFile] = useState(null);
     const [imageFileUrl, setImageFileUrl] = useState(null);
     const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
     const [imageFileUploadError, setImageFileUploadError] = useState(null);
+
     const filePickerRef = useRef()
     const handleImageChange = (e) => {
         const file = e.target.files[0]
@@ -69,23 +76,46 @@ const DashProfile = () => {
                 });
             }
         );
-
     };
     const updateHandleSubmit = async (e) => {
         e.preventDefault()
+        if (Object.keys(formData).length === 0) { return }
         try {
-            const res = await register({ username, email, password }).unwrap();
+            console.log(userInfo._id)
+            const res = await update(formData, userInfo._id).unwrap();
             dispatch(setCredentials({ ...res }));
         } catch (err) {
             setError(err?.data?.message || err.error)
-            console.log(Error)
+            console.log(err)
         }
     }
     ///Handle change for inputs
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value })
     }
-    console.log(formData)
+
+    const onClickDeleteUserHandle = async (e) => {
+        e.preventDefault()
+        setOpenModal(false);
+        try {
+            const res = await deleteUser(userInfo._id).unwrap();
+            dispatch(logout({ ...res }));
+        } catch (err) {
+            setError(err?.data?.message || err.error)
+        }
+    }
+    const logoutHandleSubmit = async () => {
+        try {
+            await logOutApiCall().unwrap();
+            dispatch(logout());
+            navigate('/');
+        } catch (err) {
+            console.log(err)
+
+        }
+    }
+    // console.log(formData)
+    // console.log(userInfo._id)
 
     return (
         <div className=' relative mx-auto max-w-lg p-3 w-full'>
@@ -95,7 +125,7 @@ const DashProfile = () => {
                 <div className="relative w-40 h-40 self-center cursor-pointer shadow-xl mt-10 border-5 border-[lightgray] rounded-full overflow-hidden">
                     {imageFileUploadProgress && (
                         <CircularProgressbar value={imageFileUploadProgress || 0}
-                            text={`${imageFileUploadProgress}%`}
+                            text={`${imageFileUploadProgress == 100 ? " " : imageFileUploadProgress + "%"}`}
                             strokeWidth={5}
                             styles={{
                                 root: {
@@ -127,13 +157,37 @@ const DashProfile = () => {
                 <Button gradientDuoTone="greenToBlue" type='submit' onClick={updateHandleSubmit} >Update</Button>
             </form >
             {isError && (
-                <Alert icon={HiInformationCircle} color="failure">
+                <Alert className='mt-2' icon={HiInformationCircle} color="failure">
                     {Error}
                 </Alert>
             )}
+            {isSuccess && (
+                <Alert className='mt-2' icon={HiInformationCircle} color="success">
+                    User's profile updated successfully
+                </Alert>
+            )}
+            <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+                <Modal.Header />
+                <Modal.Body>
+                    <div className="text-center">
+                        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            Are you sure you want to delete this product?
+                        </h3>
+                        <div className="flex justify-center gap-4">
+                            <Button color="failure" onClick={onClickDeleteUserHandle}  >
+                                {"Yes, I'm sure"}
+                            </Button>
+                            <Button color="gray" onClick={() => setOpenModal(false)}>
+                                No, cancel
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
             <div className='flex flex-row justify-between mt-2 text-red-600'>
-                <div className='cursor-pointer'>Delete Account</div>
-                <div className='cursor-pointer'>Sign Out</div>
+                <div className='cursor-pointer' onClick={() => { setOpenModal(true) }}>Delete Account</div>
+                <div className='cursor-pointer' onClick={logoutHandleSubmit}>Sign Out</div>
             </div >
         </div >
     )

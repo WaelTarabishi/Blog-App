@@ -1,7 +1,8 @@
 import express from "express";
 const router = express.Router();
-import { updateUser } from "../Controllers/UserControllers.js";
+import { updateUser, deleteUser } from "../Controllers/UserController.js";
 import { protect } from "../Middleware/authMiddelware.js";
 
-router.put("/update/:userId", protect, updateUser);
+router.put("/update/:_id", protect, updateUser);
+router.delete("/delete/:_id", protect, deleteUser);
 export default router;

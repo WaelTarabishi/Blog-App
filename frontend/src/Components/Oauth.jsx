@@ -6,8 +6,10 @@ import { app } from '../firebase';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { useGoogleloginMutation } from '../Slices/authApiSlice';
 const Oauth = () => {
+
     const auth = getAuth(app)
     const [googlelogin, { isLoading }] = useGoogleloginMutation()
+
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const googleHandleClick = async () => {
