@@ -9,7 +9,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useUpdateMutation, useDeleteUserMutation, useLogoutMutation } from '../Slices/authApiSlice';
 import { setCredentials, logout } from '../Slices/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DashProfile = () => {
     const { userInfo } = useSelector((state) => state.auth);
@@ -30,6 +30,8 @@ const DashProfile = () => {
 
     const filePickerRef = useRef()
     const handleImageChange = (e) => {
+
+
         const file = e.target.files[0]
         if (file) {
             setImageFile(file);
@@ -114,6 +116,7 @@ const DashProfile = () => {
 
         }
     }
+
     // console.log(formData)
     // console.log(userInfo._id)
 
@@ -151,10 +154,15 @@ const DashProfile = () => {
                 {imageFileUploadError && (<Alert icon={HiInformationCircle} color="failure">{imageFileUploadError}</Alert>)}
 
 
-                <TextInput type="text" id='username' placeholder='username' defaultValue={userInfo.name} onChange={handleChange} />
-                <TextInput type="email" id='email' placeholder='email' defaultValue={userInfo.email} onChange={handleChange} />
-                <TextInput type="password" id='password' placeholder='password' onChange={handleChange} />
-                <Button gradientDuoTone="greenToBlue" type='submit' onClick={updateHandleSubmit} >Update</Button>
+                <TextInput type="text" id='username' placeholder='username' defaultValue={userInfo.name} onChange={handleChange} disabled={isLoading} />
+                <TextInput type="email" id='email' placeholder='email' defaultValue={userInfo.email} onChange={handleChange} disabled={isLoading} />
+                <TextInput type="password" id='password' placeholder='password' onChange={handleChange} disabled={isLoading} />
+                <Button gradientDuoTone="greenToBlue" type='submit' onClick={updateHandleSubmit} disabled={isLoading} >{isLoading ? ("Loading... ") : ("Update")}</Button>
+                {userInfo.isAdmin && (
+                    <Link to={'/create-post'}>
+                        <Button type='button' gradientDuoTone="pinkToOrange" className='w-full' >Create Post</Button>
+                    </Link>
+                )}
             </form >
             {isError && (
                 <Alert className='mt-2' icon={HiInformationCircle} color="failure">
@@ -172,7 +180,7 @@ const DashProfile = () => {
                     <div className="text-center">
                         <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
                         <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            Are you sure you want to delete this product?
+                            Are you sure you want to delete this account?
                         </h3>
                         <div className="flex justify-center gap-4">
                             <Button color="failure" onClick={onClickDeleteUserHandle}  >

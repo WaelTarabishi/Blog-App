@@ -38,7 +38,7 @@ const Singup = () => {
         }
     }
     return (
-        <div className="flex min-h-screen justify-center  bg-red   pl-3 pr-3 " >
+        <div className="flex  md:min-h-screen md:mt-0 mt-5  justify-center  bg-red   pl-3 pr-3 " >
 
             <div className='w-full flex items-center  justify-center md:flex-row  flex-col  gap-4 flex-1 '>
                 <div className='flex flex-col gap-4   justify-center  h-full md:w-auto md:pl-0  w-full    '>

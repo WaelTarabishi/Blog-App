@@ -40,7 +40,7 @@ const deleteUser = asyncHandler(async (req, res, next) => {
     next(errorHandler((403, "You are now allowed to delete this user")));
   }
   try {
-    await User.findOneAndDelete(req.param.id);
+    await User.findOneAndDelete(req.param._id);
     res.status(200).json({ message: "User has been deleted" });
   } catch (err) {
     next(err);

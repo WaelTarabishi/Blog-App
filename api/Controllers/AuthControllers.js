@@ -59,7 +59,7 @@ const signin = asyncHandler(async (req, res, next) => {
       name: user.username,
       email: user.email,
       profilePicture: user.profilePicture,
-      isAdmen: user.isAdmin,
+      isAdmin: user.isAdmin,
     });
   } else {
     next(errorHandler(400, "User not Found"));
@@ -93,7 +93,7 @@ const signinWithGoogle = asyncHandler(async (req, res, next) => {
     name: user.username,
     email: user.email,
     profilePicture: photoUrl,
-    isAdmen: user.isAdmin,
+    isAdmin: user.isAdmin,
   });
 });
 
