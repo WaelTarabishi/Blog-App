@@ -20,7 +20,7 @@ const CreatePost = () => {
                     <Button type='button' gradientDuoTone="greenToBlue" size='sm' outline>Upload image</Button>
                 </div>
                 <ReactQuill theme='snow' placeholder='Write something...' className='h-72  dark:text-white mb-12' required />
-                <Button type='submit' gradientMonochrome="teal">Publish</Button>
+                <Button type='submit' gradientMonochrome="teal" >Publish</Button>
             </form>
         </div>
     )
