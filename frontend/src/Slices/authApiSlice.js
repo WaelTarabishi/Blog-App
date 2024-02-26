@@ -1,8 +1,10 @@
 import { apiSlice } from "./apiSlice";
 const AUTH_URL = "/api/auth";
 const User_URL = "/api/user";
+const POST_URL = "/api/post";
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Auth Api
     login: builder.mutation({
       query: (data) => ({
         url: `${AUTH_URL}/login`,
@@ -30,6 +32,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    // User Api
     update: builder.mutation({
       query: (data, _id) => ({
         url: `${User_URL}/update/${_id}`,
@@ -43,6 +46,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    // Post Api
+    createpost: builder.mutation({
+      query: (data) => ({
+        url: `${POST_URL}/create`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -53,4 +64,5 @@ export const {
   useGoogleloginMutation,
   useUpdateMutation,
   useDeleteUserMutation,
+  useCreatepostMutation,
 } = userApiSlice;

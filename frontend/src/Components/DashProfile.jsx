@@ -30,14 +30,13 @@ const DashProfile = () => {
 
     const filePickerRef = useRef()
     const handleImageChange = (e) => {
-
-
         const file = e.target.files[0]
         if (file) {
             setImageFile(file);
             setImageFileUrl(URL.createObjectURL(file));
         }
     }
+
     useEffect(() => {
         if (imageFile) {
             uploadImage();
