@@ -1,7 +1,7 @@
 
 const DashPosts = () => {
     return (
-        <div>DashPosts</div>
+        <div className=""></div>
     )
 }
 
