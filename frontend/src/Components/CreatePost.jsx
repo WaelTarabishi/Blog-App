@@ -69,7 +69,7 @@ const CreatePost = () => {
 
     console.log(formData)
     return (
-        <div className=' flex flex-col mx-auto itmes-center mb-28 p-3 max-w-[1200px]'>
+        <div className=' flex flex-col mx-auto itmes-center mb-28 p-3 max-w-[1000px]'>
             <h1 className='text-center text-3xl my-7 font-semibold '>Create Post</h1>
             <form className='flex flex-col gap-4'>
                 <div className='flex sm:flex-row flex-col justify-between  gap-4  '>

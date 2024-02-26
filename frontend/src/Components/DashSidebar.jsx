@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
-import { HiArrowSmRight, HiUser } from 'react-icons/hi';
+import { HiArrowSmRight, HiDocumentText, HiUser } from 'react-icons/hi';
 import { useLogoutMutation } from '../Slices/authApiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../Slices/authSlice';
@@ -35,12 +35,17 @@ const DashSidebar = () => {
     return (
         <Sidebar className='w-full md:w-56'>
             <Sidebar.Items>
-                <Sidebar.ItemGroup >
+                <Sidebar.ItemGroup  >
                     <Link to='/dashboard?tab=profile' >
-                        <Sidebar.Item active={tab === "profile"} as={'div'} icon={HiUser} label={"User"} labelColor='dark'>
+                        <Sidebar.Item active={tab === "profile"} as={'div'} icon={HiUser} label={userInfo.isAdmin ? "Admin" : "User"} labelColor='dark'>
                             Profile
                         </Sidebar.Item>
                     </Link>
+                    {userInfo.isAdmin && (
+                        <Link to='/dashboard?tab=posts'>
+                            <Sidebar.Item active={tab === "posts"} as={'div'} icon={HiDocumentText} className="mt-2">Posts</Sidebar.Item>
+                        </Link>
+                    )}
                     <Sidebar.Item icon={HiArrowSmRight} className="cursor-pointer" onClick={logoutHandleSubmit}>
                         Sign Out
                     </Sidebar.Item>
