@@ -2,7 +2,7 @@ import { apiSlice } from "./apiSlice";
 const AUTH_URL = "/api/auth";
 const User_URL = "/api/user";
 const POST_URL = "/api/post";
-export const userApiSlice = apiSlice.injectEndpoints({
+export const ApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Auth Api
     login: builder.mutation({
@@ -54,6 +54,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getposts: builder.mutation({
+      query: (_id) => ({
+        url: `${POST_URL}/getposts?userId=${_id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -65,4 +71,5 @@ export const {
   useUpdateMutation,
   useDeleteUserMutation,
   useCreatepostMutation,
-} = userApiSlice;
+  useGetpostsMutation,
+} = ApiSlice;
