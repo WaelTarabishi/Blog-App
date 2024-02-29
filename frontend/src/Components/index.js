@@ -8,3 +8,4 @@ export { default as DashSidebar } from "./DashSidebar";
 export { default as DashProfile } from "./DashProfile";
 export { default as DashPosts } from "./DashPosts";
 export { default as CreatePost } from "./CreatePost";
+export { default as UpdatePost } from "./UpdatePost";

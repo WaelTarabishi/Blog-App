@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
 import { About, Dashborad, Projects, Home, Signin, Signup, Error } from './pages';
-import { PrivateRoute, ThemeProvider, OnlyAdminPrivateRoute, CreatePost } from "./Components"
+import { PrivateRoute, ThemeProvider, OnlyAdminPrivateRoute, CreatePost, UpdatePost } from "./Components"
 import { Provider } from 'react-redux';
 import store from './sotre.js';
 import './index.css'
@@ -20,6 +20,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path='' element={<OnlyAdminPrivateRoute />}>
         <Route path='/create-post' element={<CreatePost />} />
+        <Route path='/update-post/:postId' element={<UpdatePost />} />
       </Route>
 
       <Route path='/projects' element={<Projects />} />

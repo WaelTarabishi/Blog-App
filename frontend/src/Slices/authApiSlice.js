@@ -2,6 +2,7 @@ import { apiSlice } from "./apiSlice";
 const AUTH_URL = "/api/auth";
 const User_URL = "/api/user";
 const POST_URL = "/api/post";
+
 export const ApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Auth Api
@@ -60,6 +61,29 @@ export const ApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getpost: builder.mutation({
+      query: (_id) => ({
+        url: `${POST_URL}/getposts?postId=${_id}`,
+        method: "GET",
+      }),
+    }),
+    getpostsmore: builder.mutation({
+      query: (_id, startIndex) => ({
+        url: `${POST_URL}/getposts?userId=${_id}?&startIndex=${
+          startIndex || 9
+        }`,
+        method: "GET",
+      }),
+    }),
+    deletepost: builder.mutation({
+      query: (params) => {
+        const [userId, postId] = params;
+        return {
+          url: `${POST_URL}/deletepost/${postId}/${userId}`,
+          method: "DELETE",
+        };
+      },
+    }),
   }),
 });
 
@@ -72,4 +96,7 @@ export const {
   useDeleteUserMutation,
   useCreatepostMutation,
   useGetpostsMutation,
+  useGetpostsmoreMutation,
+  useDeletepostMutation,
+  useGetpostMutation,
 } = ApiSlice;

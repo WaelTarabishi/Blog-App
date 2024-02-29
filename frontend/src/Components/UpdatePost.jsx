@@ -1,18 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
-import { useCreatepostMutation } from '../Slices/authApiSlice';
+import { useCreatepostMutation, useGetpostsMutation, useGetpostMutation } from '../Slices/authApiSlice';
 import { app } from '../firebase';
 import { HiInformationCircle } from 'react-icons/hi';
 import { getDownloadURL, getStorage, uploadBytesResumable, ref } from 'firebase/storage';
 import { CircularProgressbar } from 'react-circular-progressbar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-circular-progressbar/dist/styles.css';
 import 'react-quill/dist/quill.snow.css';
-const CreatePost = () => {
+const UpdatePost = () => {
     const navigate = useNavigate()
+    const { userInfo } = useSelector(state => state.auth)
+    const { postId } = useParams()
     const [Error, setError] = useState('')
     const [createpost, { isLoading, isError, isSuccess }] = useCreatepostMutation()
+    const [getposts] = useGetpostsMutation()
+    const [getpost] = useGetpostMutation()
+
     const [file, setFile] = useState('')
     const [imageUploadProgress, setImageUploadProgress] = useState(null)
     const [imageUploadError, setImageUploadError] = useState(null)
@@ -63,22 +69,34 @@ const CreatePost = () => {
         if (Object.keys(formData).length === 0) { return }
         try {
             await createpost(formData).unwrap();
-            navigate('/dashboard?tab=posts')
-
         } catch (err) {
             setError(err?.data?.message || err.error)
             console.log(err)
         }
     }
+    useEffect(() => {
+        try {
+            const getPost = async () => {
+                const res = await getpost(postId).unwrap()
+                console.log(res)
+                setFormData(...res.posts)
+            }
+            getPost()
 
-    // console.log(formData)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }, [])
+
+    console.log(formData)
     return (
         <div className=' flex flex-col mx-auto itmes-center mb-28 p-3 max-w-[1000px]'>
-            <h1 className='text-center text-3xl my-7 font-semibold '>Create Post</h1>
+            <h1 className='text-center text-3xl my-7 font-semibold '>Update Post</h1>
             <form className='flex flex-col gap-4'>
                 <div className='flex sm:flex-row flex-col justify-between  gap-4  '>
-                    <TextInput type='text' placeholder='Title' className='flex-1 ' onChange={(e) => { setFormData({ ...formData, title: e.target.value }) }} />
-                    <Select className='flex-[0.7]' onChange={(e) => { setFormData({ ...formData, category: e.target.value }) }}>
+                    <TextInput type='text' placeholder='Title' className='flex-1 ' value={formData.title} onChange={(e) => { setFormData({ ...formData, title: e.target.value }) }} />
+                    <Select className='flex-[0.7]' value={formData.category} onChange={(e) => { setFormData({ ...formData, category: e.target.value }) }}>
                         <option value="uncatergorized">Select a category</option>
                         <option value="javascript">JavaScript</option>
                         <option value="reactjs">ReactJs</option>
@@ -95,8 +113,8 @@ const CreatePost = () => {
                 </div>
                 {imageUploadError && (<Alert icon={HiInformationCircle} color="failure">{imageUploadError}</Alert>)}
                 {formData.image && (<img src={formData.image} alt='upload' className='w-full  h-[500px] object-cover'></img>)}
-                <ReactQuill theme='snow' placeholder='' className=' h-72  dark:text-white mb-12 p' required onChange={(value) => { setFormData({ ...formData, content: value }) }} />
-                <Button type='submit' gradientMonochrome="teal" className='' onClick={publishHandleSubmit} disabled={isLoading || imageUploadProgress} >{isLoading ? "Loading..." : "Publish"}</Button>
+                <ReactQuill theme='snow' placeholder='' value={formData.content} className=' h-72  dark:text-white mb-12 p' required onChange={(value) => { setFormData({ ...formData, content: value }) }} />
+                <Button type='submit' gradientMonochrome="teal" className='' onClick={publishHandleSubmit} disabled={isLoading || imageUploadProgress} >{isLoading ? "Loading..." : "Update"}</Button>
                 {isError && (
                     <Alert className='mt-1 mb-6' icon={HiInformationCircle} color="failure">
                         {Error}
@@ -112,4 +130,4 @@ const CreatePost = () => {
     )
 
 }
-export default CreatePost
+export default UpdatePost
