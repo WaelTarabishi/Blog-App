@@ -8,7 +8,8 @@ import asyncHandler from "express-async-handler";
 const updateUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
-    console.log(user);
+    // console.log(user);
+    console.log(req.body);
     if (user) {
       user.username = req.body.username || user.username;
       user.email = req.body.email || user.email;
@@ -22,6 +23,7 @@ const updateUser = async (req, res, next) => {
         name: updatedUser.username,
         email: updatedUser.email,
         profilePicture: updatedUser.profilePicture, // Fixed variable name
+        isAdmin: user.isAdmin,
       });
     } else {
       res.status(404).json({ message: "User not found" }); // Send the response for user not found
@@ -35,7 +37,7 @@ const updateUser = async (req, res, next) => {
 //route POST /api/user/delete/:id
 //@access Private
 const deleteUser = asyncHandler(async (req, res, next) => {
-  if (req.user.id !== req.params._id) {
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     next(errorHandler((403, "You are now allowed to delete this user")));
   }
   try {
@@ -46,11 +48,13 @@ const deleteUser = asyncHandler(async (req, res, next) => {
   }
 });
 const getUsers = async (req, res, next) => {
+  console.log(req.query);
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "You are not allowed to see all users"));
   }
 
   try {
+    console.log(req.query.startIndex);
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.sort == "asc" ? 1 : -1;

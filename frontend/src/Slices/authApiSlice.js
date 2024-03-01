@@ -35,18 +35,36 @@ export const ApiSlice = apiSlice.injectEndpoints({
     }),
     // User Api
     update: builder.mutation({
-      query: (data, _id) => ({
-        url: `${User_URL}/update/${_id}`,
+      query: (data, idUpdate) => ({
+        url: `${User_URL}/update/${idUpdate}`,
         method: "PUT",
         body: data,
       }),
     }),
     deleteUser: builder.mutation({
-      query: (_id) => ({
-        url: `${User_URL}/delete/${_id}`,
-        method: "DELETE",
+      query: (deleteparams) => {
+        const [post_id, actualUser] = deleteparams;
+        return {
+          url: `${User_URL}/delete/${post_id}/${actualUser}`,
+          method: "DELETE",
+        };
+      },
+    }),
+    getusers: builder.mutation({
+      query: () => ({
+        url: `${User_URL}/getusers`,
+        method: "GET",
       }),
     }),
+    getmoreusers: builder.mutation({
+      query: (indexToStart) => {
+        return {
+          url: `${User_URL}/getusers?&startIndex=${indexToStart}`,
+          method: "GET",
+        };
+      },
+    }),
+
     // Post Api
     createpost: builder.mutation({
       query: (data) => ({
@@ -56,24 +74,32 @@ export const ApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getposts: builder.mutation({
-      query: (_id) => ({
-        url: `${POST_URL}/getposts?userId=${_id}`,
+      query: () => ({
+        url: `${POST_URL}/getposts`,
         method: "GET",
       }),
     }),
     getpost: builder.mutation({
-      query: (_id) => ({
-        url: `${POST_URL}/getposts?postId=${_id}`,
+      query: (idTogetPost) => ({
+        url: `${POST_URL}/getposts?postId=${idTogetPost}`,
         method: "GET",
       }),
     }),
     getpostsmore: builder.mutation({
-      query: (_id, startIndex) => ({
-        url: `${POST_URL}/getposts?userId=${_id}?&startIndex=${
-          startIndex || 9
-        }`,
+      query: (starterIndex) => ({
+        url: `${POST_URL}/getposts?&startIndex=${starterIndex}`,
         method: "GET",
       }),
+    }),
+    updatepost: builder.mutation({
+      query: (sa) => {
+        const [post_id, idu, data] = sa;
+        return {
+          url: `${POST_URL}/update/${post_id}/${idu}`,
+          method: "PUT",
+          body: data,
+        };
+      },
     }),
     deletepost: builder.mutation({
       query: (params) => {
@@ -93,8 +119,11 @@ export const {
   useRegisterMutation,
   useGoogleloginMutation,
   useUpdateMutation,
+  useGetusersMutation,
+  useGetmoreusersMutation,
   useDeleteUserMutation,
   useCreatepostMutation,
+  useUpdatepostMutation,
   useGetpostsMutation,
   useGetpostsmoreMutation,
   useDeletepostMutation,

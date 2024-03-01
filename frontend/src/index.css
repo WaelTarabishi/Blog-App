@@ -15,3 +15,8 @@ body {
   background-clip: text;
   color: transparent;
 }
+.blurred-img {
+  background-image: url(imageName-small.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}

@@ -13,11 +13,16 @@ const DashPosts = () => {
     const [showMore, setShowMore] = useState(true)
     const [postIdToDelete, setPostIdToDelete] = useState('')
     const [openModal, setOpenModal] = useState(false)
+    const [postsNumber, setPostsNumber] = useState(0)
+    const [loadShowMore, setLoadShowMore] = useState(false)
+
     const fetchPosts = async () => {
         try {
-            const res = await getposts(userInfo._id).unwrap()
+            const res = await getposts().unwrap()
+            // console.log(res)
             setPosts(res.posts)
-            if (res.posts.length < 9) {
+            setPostsNumber(res.posts.length)
+            if (res.posts.length <= 9) {
                 setShowMore(false)
             }
         } catch (err) {
@@ -28,29 +33,27 @@ const DashPosts = () => {
         fetchPosts()
     }, [userInfo._id])
     const showMoreHandle = async () => {
-        let startIndex = posts.length;
-        console.log(startIndex)
+        setLoadShowMore(true)
         try {
-            const res = await getpostsmore(userInfo._id, startIndex).unwrap();
-            // console.log(res.posts)
-            setPosts((prev) => [...prev, ...res.posts]);
-            // console.log(posts)
-            if (res.posts.length < 9) {
+            const res = await getpostsmore(postsNumber)
+            console.log(res.data.posts)
+            setPosts((prev) => [...prev, ...res.data.posts]);
+            if (res.data.posts.length <= 9) {
                 setShowMore(false);
             }
+            setLoadShowMore(false)
+
         } catch (err) {
             console.log(err);
         }
     }
     const onClickDeletePostHandler = async () => {
-        console.log(postIdToDelete);
         const post1 = postIdToDelete
         try {
             if (userInfo && userInfo._id) {
                 await deletepost([userInfo._id, post1]);
                 setPosts((prev) => prev.filter((post) => post._id !== postIdToDelete));
                 setOpenModal(false)
-
             } else {
                 console.log("User info is null or missing _id property.");
             }
@@ -58,9 +61,6 @@ const DashPosts = () => {
             console.log(err);
         }
     };
-
-
-
 
     return (
         <div className="table-auto overflow-x-scroll md:mx-auto my-10 px-4 sm:scrollbar-none   scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-700  w-full" >
@@ -84,7 +84,7 @@ const DashPosts = () => {
                                         <Table.Cell>  {new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
                                         <Table.Cell>
                                             <Link to={`/post/${post.slug}`} >
-                                                <img src={post.image} className=' w-24  h-full bg-gray-500 object-contain' />
+                                                <img src={post.image} className=' w-24  h-full bg-gray-500 object-contain' loading='lazy' />
                                             </Link>
                                         </Table.Cell>
                                         <Table.Cell>
@@ -141,9 +141,10 @@ const DashPosts = () => {
                         </Modal.Body>
                     </Modal>
                     {showMore && (
-                        <div className=' w-full text-center text-blue-500 mt-2 cursor-pointer hover:text-blue-400' onClick={showMoreHandle} >
-                            Show More
-                        </div>)}
+                        <button className={`w-full text-center text-blue-500 mt-2 cursor-pointer hover:text-blue-400`} onClick={showMoreHandle} disabled={loadShowMore}  >
+                            {loadShowMore ? (<Spinner size="md" />) : (<span>Show more</span>)}
+                        </button>
+                    )}
                 </>)
                 : !isLoading && posts.length == 0 ? (<div className='flex justify-center items-center h-full text-xl font-semibold  '>There's no Posts right now</div>) :
                     (<div className='flex justify-center items-center h-full gap-2'>
