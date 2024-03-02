@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useGetpostbyslugMutation } from '../Slices/authApiSlice';
 import { Alert, Button, FileInput, Select, TextInput, Spinner } from 'flowbite-react';
+import { CallToAction } from '../Components';
 const PostPage = () => {
     const [getpostbyslug, { isLoading }] = useGetpostbyslugMutation()
     const [actualPost, setActualPost] = useState("")
@@ -41,9 +42,9 @@ const PostPage = () => {
                             <span>{new Date(actualPost.createdAt).toLocaleDateString()}</span>
                             <span className='italic'>{actualPost && ((actualPost.content.length / 1000).toFixed(0))} mins read</span>
                         </div>
-                        <div className='mx-auto w-full max-w-2xl p-2 post-content ' dangerouslySetInnerHTML={{ __html: actualPost.content }}>
+                        <div className='mx-auto w-full max-w-2xl p-2 post-content ' dangerouslySetInnerHTML={{ __html: actualPost.content }} />
+                        <div className='max-w-4xl mx-auto w-full mt-6'><CallToAction /></div>
 
-                        </div>
                     </main>
                 )
             }
