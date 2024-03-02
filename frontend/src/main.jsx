@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
-import { About, Dashborad, Projects, Home, Signin, Signup, Error } from './pages';
+import { About, Dashborad, Projects, Home, Signin, Signup, Error, PostPage } from './pages';
 import { PrivateRoute, ThemeProvider, OnlyAdminPrivateRoute, CreatePost, UpdatePost } from "./Components"
 import { Provider } from 'react-redux';
 import store from './sotre.js';
@@ -24,6 +24,7 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path='/projects' element={<Projects />} />
+      <Route path='/post/:postSlug' element={<PostPage />} />
       <Route path='*' element={<Error />} />
     </Route >
   )

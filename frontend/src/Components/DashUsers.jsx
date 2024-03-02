@@ -24,7 +24,7 @@ const DashUsers = () => {
 
             const res = await getusers().unwrap()
             setUsersNumber(res.length)
-            if (res.length <= 9) {
+            if (res.length < 9) {
                 setShowMore(false)
             }
             // console.log(res)
@@ -40,8 +40,8 @@ const DashUsers = () => {
             await deleteUser([userToDelete, userInfo._id]).unwrap();
             // console.log("User deleted successfully.");
             setUsers((prev) => prev.filter((user) => user._id !== userToDelete));
-
             setOpenModal(false);
+            setUserToDelete("")
         } catch (err) {
             console.log(err)
         }
@@ -52,7 +52,7 @@ const DashUsers = () => {
             const res = await getmoreusers(usersNumber)
             setUsers(prev => [...prev, ...res.data])
             // console.log(res.data)
-            if (res.data.length <= 9) {
+            if (res.data.length < 9) {
                 setShowMore(false)
             }
 
@@ -140,7 +140,15 @@ const DashUsers = () => {
                     </Modal>
                     {showMore && (
                         <button className=' w-full text-center text-blue-500 mt-2 cursor-pointer hover:text-blue-400' disabled={loadShowMore} onClick={showMoreHandle} >
-                            {loadShowMore ? (<Spinner size="md" />) : (<span>Show more</span>)}                        </button>)}
+                            {loadShowMore ? (<div className='flex justify-center items-center h-full gap-2'>
+                                <span>
+                                    <Spinner color="info" size='md' aria-label="Info spinner example" />
+                                </span>
+                                <span className='text-lg font-medium'>
+                                    Loading...
+                                </span>
+                            </div>) : (<span>Show more</span>)}
+                        </button>)}
                 </>)
                 : !isLoading && users.length == 0 ? (<div className='flex justify-center items-center h-full text-xl font-semibold  '>There's no Users right now</div>) :
                     (<div className='flex justify-center items-center h-full gap-2'>

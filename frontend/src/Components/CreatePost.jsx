@@ -80,9 +80,9 @@ const CreatePost = () => {
                     <TextInput type='text' placeholder='Title' className='flex-1 ' onChange={(e) => { setFormData({ ...formData, title: e.target.value }) }} />
                     <Select className='flex-[0.7]' onChange={(e) => { setFormData({ ...formData, category: e.target.value }) }}>
                         <option value="uncatergorized">Select a category</option>
-                        <option value="javascript">JavaScript</option>
-                        <option value="reactjs">ReactJs</option>
-                        <option value="nextjs">NextJs</option>
+                        <option value="Javascript">JavaScript</option>
+                        <option value="Reactjs">ReactJs</option>
+                        <option value="Nextjs">NextJs</option>
                     </Select>
                 </div>
                 <div className='flex gap-4 items-center justify-between border-4 border-teal-400 border-dotted p-2'>

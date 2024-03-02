@@ -4,6 +4,7 @@
 import { errorHandler } from "../utils/error.js";
 import Post from "../Models/Post.Model.js";
 const createPost = async (req, res, next) => {
+  // console.log(req.body.title);
   const { title } = req.body;
 
   if (!req.user.isAdmin) {
@@ -25,9 +26,8 @@ const createPost = async (req, res, next) => {
     .join("-")
     .toLowerCase()
     .replace(/[^a-zA-Z0-9]/g, "-");
-
+  console.log(slug);
   const post = await Post.create({ ...req.body, userId: req.user._id, slug });
-
   if (post) {
     res.status(200).json({
       userId: post.userId,
@@ -37,6 +37,7 @@ const createPost = async (req, res, next) => {
       slug: post.slug,
       category: post.category,
     });
+    console.log(post.slug);
   } else {
     next(errorHandler(400, "Invalid Data"));
   }
@@ -107,6 +108,11 @@ const updatePost = async (req, res, next) => {
     next(errorHandler(403, "You are not allowed to delete this post"));
   }
   try {
+    const slug = req.body.title
+      .split(" ")
+      .join("-")
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9]/g, "-");
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.postId,
       {
@@ -114,6 +120,7 @@ const updatePost = async (req, res, next) => {
           title: req.body.title,
           content: req.body.content,
           category: req.body.category,
+          slug,
         },
       },
       { new: true }

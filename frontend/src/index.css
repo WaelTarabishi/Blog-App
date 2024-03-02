@@ -6,17 +6,36 @@ body {
   height: 100vh;
 }
 
-.ql-editor {
-  font-size: 1.05em;
+.post-content p {
+  margin-bottom: 0.5rem;
+  /* color: red; */
 }
-
-.gradient-text {
-  background-image: linear-gradient(89.97deg, #ae67fa 1.84%, #f49867 102.67%);
-  background-clip: text;
-  color: transparent;
+.post-content h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: sans-serif;
+  /* color: red; */
+  margin: 1.5rem 0;
 }
-.blurred-img {
-  background-image: url(imageName-small.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+.post-content h2 {
+  font-size: 1.4rem;
+  font-family: sans-serif;
+  margin: 1.5 rem;
+  /* color: red; */
+}
+.post-content a {
+  color: rgb(73, 149, 199);
+  text-decoration: none;
+}
+.post-content a:hover {
+  color: rgb(73, 149, 199);
+  text-decoration: underline;
+}
+.dark .post-content a {
+  color: rgb(199, 19, 40);
+  text-decoration: none;
+}
+.dark .post-content a:hover {
+  color: rgb(199, 19, 40);
+  text-decoration: underline;
 }

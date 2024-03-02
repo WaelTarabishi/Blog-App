@@ -43,9 +43,9 @@ export const ApiSlice = apiSlice.injectEndpoints({
     }),
     deleteUser: builder.mutation({
       query: (deleteparams) => {
-        const [post_id, actualUser] = deleteparams;
+        const [userToDelete, actualUser] = deleteparams;
         return {
-          url: `${User_URL}/delete/${post_id}/${actualUser}`,
+          url: `${User_URL}/delete/${userToDelete}/${actualUser}`,
           method: "DELETE",
         };
       },
@@ -82,6 +82,12 @@ export const ApiSlice = apiSlice.injectEndpoints({
     getpost: builder.mutation({
       query: (idTogetPost) => ({
         url: `${POST_URL}/getposts?postId=${idTogetPost}`,
+        method: "GET",
+      }),
+    }),
+    getpostbyslug: builder.mutation({
+      query: (slug) => ({
+        url: `${POST_URL}/getposts?slug=${slug}`,
         method: "GET",
       }),
     }),
@@ -123,6 +129,7 @@ export const {
   useGetmoreusersMutation,
   useDeleteUserMutation,
   useCreatepostMutation,
+  useGetpostbyslugMutation,
   useUpdatepostMutation,
   useGetpostsMutation,
   useGetpostsmoreMutation,

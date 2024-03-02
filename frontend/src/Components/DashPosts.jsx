@@ -22,7 +22,7 @@ const DashPosts = () => {
             // console.log(res)
             setPosts(res.posts)
             setPostsNumber(res.posts.length)
-            if (res.posts.length <= 9) {
+            if (res.posts.length < 9) {
                 setShowMore(false)
             }
         } catch (err) {
@@ -38,7 +38,7 @@ const DashPosts = () => {
             const res = await getpostsmore(postsNumber)
             console.log(res.data.posts)
             setPosts((prev) => [...prev, ...res.data.posts]);
-            if (res.data.posts.length <= 9) {
+            if (res.data.posts.length < 9) {
                 setShowMore(false);
             }
             setLoadShowMore(false)
@@ -48,12 +48,13 @@ const DashPosts = () => {
         }
     }
     const onClickDeletePostHandler = async () => {
-        const post1 = postIdToDelete
         try {
             if (userInfo && userInfo._id) {
-                await deletepost([userInfo._id, post1]);
+                await deletepost([userInfo._id, postIdToDelete]);
                 setPosts((prev) => prev.filter((post) => post._id !== postIdToDelete));
                 setOpenModal(false)
+                setPostIdToDelete("")
+
             } else {
                 console.log("User info is null or missing _id property.");
             }
@@ -61,7 +62,7 @@ const DashPosts = () => {
             console.log(err);
         }
     };
-
+    console.log(posts)
     return (
         <div className="table-auto overflow-x-scroll md:mx-auto my-10 px-4 sm:scrollbar-none   scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-700  w-full" >
             {userInfo.isAdmin && posts.length > 0 ? (

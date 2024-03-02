@@ -23,6 +23,11 @@ const postSchema = new mongoose.Schema(
       type: String,
       unique: false,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
   },
   { timestamps: true }
 );

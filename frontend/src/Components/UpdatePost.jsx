@@ -60,6 +60,7 @@ const UpdatePost = () => {
                         setImageUploadProgress(null)
                         setImageUploadError(null)
                         setFormData({ ...formData, image: donwlaodURL })
+
                     })
                 }
             )
