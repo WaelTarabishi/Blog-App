@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
 import { About, Dashborad, Projects, Home, Signin, Signup, Error, PostPage } from './pages';
-import { PrivateRoute, ThemeProvider, OnlyAdminPrivateRoute, CreatePost, UpdatePost } from "./Components"
+import { PrivateRoute, ThemeProvider, OnlyAdminPrivateRoute, CreatePost, UpdatePost, ScrollToTop } from "./Components"
 import { Provider } from 'react-redux';
 import store from './sotre.js';
 import './index.css'
 
+// const Applayout = (second) => { third }
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App />}>
+    <Route path='/' element={<App />} onUpdate={() => window.scrollTo(0, 0)}>
       <Route index={true} path='/' element={<Home />}></Route>
       <Route path='/about' element={<About />} />
       <Route path='/sign-in' element={<Signin />} />

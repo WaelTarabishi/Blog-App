@@ -2,6 +2,7 @@ import { apiSlice } from "./apiSlice";
 const AUTH_URL = "/api/auth";
 const User_URL = "/api/user";
 const POST_URL = "/api/post";
+const COMMENT_URL = "/api/comment";
 
 export const ApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -116,6 +117,14 @@ export const ApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
+    ///Comment Api
+    creatcomment: builder.mutation({
+      query: (data) => ({
+        url: `${COMMENT_URL}/createcomment`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -124,10 +133,12 @@ export const {
   useLogoutMutation,
   useRegisterMutation,
   useGoogleloginMutation,
+
   useUpdateMutation,
   useGetusersMutation,
   useGetmoreusersMutation,
   useDeleteUserMutation,
+
   useCreatepostMutation,
   useGetpostbyslugMutation,
   useUpdatepostMutation,
@@ -135,4 +146,6 @@ export const {
   useGetpostsmoreMutation,
   useDeletepostMutation,
   useGetpostMutation,
+
+  useCreatcommentMutation,
 } = ApiSlice;
