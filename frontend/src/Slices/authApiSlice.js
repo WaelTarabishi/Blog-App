@@ -57,6 +57,12 @@ export const ApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getuser: builder.mutation({
+      query: (userIdToGet) => ({
+        url: `${User_URL}/${userIdToGet}`,
+        method: "GET",
+      }),
+    }),
     getmoreusers: builder.mutation({
       query: (indexToStart) => {
         return {
@@ -125,6 +131,12 @@ export const ApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getpostcomments: builder.mutation({
+      query: (PostId) => ({
+        url: `${COMMENT_URL}/getpostcomments/${PostId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -138,6 +150,7 @@ export const {
   useGetusersMutation,
   useGetmoreusersMutation,
   useDeleteUserMutation,
+  useGetuserMutation,
 
   useCreatepostMutation,
   useGetpostbyslugMutation,
@@ -148,4 +161,5 @@ export const {
   useGetpostMutation,
 
   useCreatcommentMutation,
+  useGetpostcommentsMutation,
 } = ApiSlice;

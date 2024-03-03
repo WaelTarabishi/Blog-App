@@ -4,7 +4,7 @@ import { useGetpostbyslugMutation } from '../Slices/authApiSlice';
 import { Alert, Button, FileInput, Select, TextInput, Spinner } from 'flowbite-react';
 import { CallToAction, CommentSection } from '../Components';
 const PostPage = () => {
-    const [getpostbyslug, { isLoading }] = useGetpostbyslugMutation()
+    const [getpostbyslug, { isLoading, fulfilledTimeStamp, isSuccess }] = useGetpostbyslugMutation()
     const [actualPost, setActualPost] = useState("")
     const { postSlug } = useParams()
     useEffect(() => {
@@ -15,10 +15,10 @@ const PostPage = () => {
         }
         fetchPost()
     }, [postSlug])
-    console.log(actualPost._id)
+    // console.log(actualPost._id)
     return (
         <div>
-            {isLoading ? (
+            {isLoading & !isSuccess ? (
                 <div className='flex justify-center items-center h-screen gap-2'>
                     <span>
                         <Spinner color="info" size='md' aria-label="Info spinner example" />
@@ -44,7 +44,7 @@ const PostPage = () => {
                         </div>
                         <div className='mx-auto w-full max-w-2xl p-2 post-content ' dangerouslySetInnerHTML={{ __html: actualPost && (actualPost.content) }} />
                         <div className='max-w-4xl mx-auto w-full mt-6'><CallToAction /></div>
-                        <CommentSection postId={actualPost && (actualPost._id)} />
+                        {fulfilledTimeStamp && (<CommentSection postId={actualPost && (actualPost._id)} />)}
 
                     </main>
                 )

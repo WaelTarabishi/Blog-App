@@ -32,10 +32,10 @@ const router = createBrowserRouter(
 )
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <React.StrictMode>
-      <ThemeProvider>
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </React.StrictMode>
+    {/* <React.StrictMode> */}
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+    {/* </React.StrictMode> */}
   </Provider>
 )

@@ -26,7 +26,7 @@ const createPost = async (req, res, next) => {
     .join("-")
     .toLowerCase()
     .replace(/[^a-zA-Z0-9]/g, "-");
-  console.log(slug);
+  // console.log(slug);
   const post = await Post.create({ ...req.body, userId: req.user._id, slug });
   if (post) {
     res.status(200).json({
@@ -37,14 +37,14 @@ const createPost = async (req, res, next) => {
       slug: post.slug,
       category: post.category,
     });
-    console.log(post.slug);
+    // console.log(post.slug);
   } else {
     next(errorHandler(400, "Invalid Data"));
   }
 };
 const getPosts = async (req, res, next) => {
   try {
-    console.log(req.query);
+    // console.log(req.query);
     // console.log(req);
     // console.log(req.query.startIndex);
     const startIndex = parseInt(req.query.startIndex) || 0;

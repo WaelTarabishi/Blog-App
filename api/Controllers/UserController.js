@@ -81,5 +81,17 @@ const getUsers = async (req, res, next) => {
     next(err);
   }
 };
+const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId).select("-password");
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ message: "User not found" }); // Send the response for user not found
+    }
+  } catch (err) {
+    next(err);
+  }
+};
 
-export { updateUser, deleteUser, getUsers };
+export { updateUser, deleteUser, getUsers, getUser };

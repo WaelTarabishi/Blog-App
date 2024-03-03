@@ -2,24 +2,43 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, TextInput, Textarea, Alert, Spinner } from 'flowbite-react';
-import { useCreatcommentMutation } from '../Slices/authApiSlice';
+import { useCreatcommentMutation, useGetpostcommentsMutation } from '../Slices/authApiSlice';
 import { HiInformationCircle } from 'react-icons/hi';
+import { Comments } from './';
 const CommentSection = ({ postId }) => {
     const { userInfo } = useSelector(state => state.auth)
     const navigate = useNavigate()
     const [comment, setComment] = useState('')
     const [erroHandlerForCommentLength, setErrorHandlerForCommentLength] = useState(false)
     const [createcomment, { isLoading, isSuccess, isError }] = useCreatcommentMutation()
+    const [getpostcomments] = useGetpostcommentsMutation()
+    const [comments, setComments] = useState('')
     const commentHandleSubmit = async (e) => {
         e.preventDefault()
         if (comment.length > 200) {
             setErrorHandlerForCommentLength(true)
             return
         }
-        await createcomment({ postId, userId: userInfo._id, content: comment })
+        const res = await createcomment({ postId, userId: userInfo._id, content: comment }).unwrap()
+        // console.log(res)
+        // console.log([...comments, res])
+
+        setComments([{ ...res }, ...comments])
+        // console.log(comments)
+        // setComment('')
     }
     // console.log(userInfo)
-
+    useEffect(() => {
+        const fetchComments = async () => {
+            const res = await getpostcomments(postId).unwrap()
+            // console.log(res)
+            setComments(res)
+        }
+        fetchComments()
+    }
+        , [postId])
+    // console.log(comments)
+    // console.log(comment)
     return (
         <div className='max-w-2xl mx-auto w-full p-3'>
             {
@@ -52,6 +71,20 @@ const CommentSection = ({ postId }) => {
                             You Can't create comment wiht more than 200 characters
                         </Alert>
                     )}
+                    {comments.length === 0 ? (<span className='text-sm my-5'>No Comments yet!</span>) :
+                        (
+                            <>
+                                <div className='text-sm  my-5 flex items-start gap-1 flex-col'>
+                                    <div className='flex flex-row gap-1 items-center'>
+                                        <p>Comments:</p>
+                                        <div className='border border-gray-400 py-1 px-2 rounded-sm'><p>{comments.length}</p></div>
+                                    </div>
+                                    {comments.map(mapcomment => (
+                                        <Comments comment={mapcomment} key={mapcomment._id} />
+                                    ))}
+                                </div>
+
+                            </>)}
                     {/* {isSuccess && (
                         <Alert className='mt-1 mb-6' icon={HiInformationCircle} color="success">
                         </Alert>
