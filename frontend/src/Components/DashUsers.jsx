@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-
+import { useNavigate } from 'react-router-dom';
 const DashUsers = () => {
     const { userInfo } = useSelector(state => state.auth)
     const [showMore, setShowMore] = useState(true)
@@ -19,9 +19,13 @@ const DashUsers = () => {
     const [userToDelete, setUserToDelete] = useState(null)
     const [usersNumber, setUsersNumber] = useState(0)
     const [loadShowMore, setLoadShowMore] = useState(false)
+    const navigate = useNavigate()
+
     useEffect(() => {
         const fetchUsers = async () => {
-
+            if (!userInfo.isAdmin) {
+                navigate("/dashboard?tab=profile")
+            }
             const res = await getusers().unwrap()
             setUsersNumber(res.length)
             if (res.length < 9) {

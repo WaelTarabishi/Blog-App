@@ -137,6 +137,12 @@ export const ApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getcommentlikes: builder.mutation({
+      query: (commendId) => ({
+        url: `${COMMENT_URL}/like/${commendId}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -162,4 +168,5 @@ export const {
 
   useCreatcommentMutation,
   useGetpostcommentsMutation,
+  useGetcommentlikesMutation,
 } = ApiSlice;

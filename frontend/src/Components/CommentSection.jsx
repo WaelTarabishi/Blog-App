@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, TextInput, Textarea, Alert, Spinner } from 'flowbite-react';
-import { useCreatcommentMutation, useGetpostcommentsMutation } from '../Slices/authApiSlice';
+import { useCreatcommentMutation, useGetpostcommentsMutation, useGetcommentlikesMutation } from '../Slices/authApiSlice';
 import { HiInformationCircle } from 'react-icons/hi';
+import { debounce } from 'lodash';
 import { Comments } from './';
 const CommentSection = ({ postId }) => {
     const { userInfo } = useSelector(state => state.auth)
     const navigate = useNavigate()
     const [comment, setComment] = useState('')
     const [erroHandlerForCommentLength, setErrorHandlerForCommentLength] = useState(false)
+    const [getcommentlikes] = useGetcommentlikesMutation()
     const [createcomment, { isLoading, isSuccess, isError }] = useCreatcommentMutation()
     const [getpostcomments] = useGetpostcommentsMutation()
-    const [comments, setComments] = useState('')
+    const [comments, setComments] = useState([])
+    const dispatch = useDispatch()
     const commentHandleSubmit = async (e) => {
         e.preventDefault()
         if (comment.length > 200) {
@@ -39,6 +42,33 @@ const CommentSection = ({ postId }) => {
         , [postId])
     // console.log(comments)
     // console.log(comment)
+
+    const handleLike = async (commentId) => {
+        console.log(commentId);
+
+        if (!userInfo) {
+            navigate('/sgin-in');
+        }
+        try {
+            const res = await getcommentlikes(commentId).unwrap();
+            // console.log(res)
+            setComments(comments.map((co) => {
+                if (co._id === commentId) {
+                    return {
+                        ...co,
+                        likes: res.likes,
+                        numberOfLikes: res.numberOfLikes
+                    };
+                } else {
+                    return co; // Return the original comment if _id doesn't match
+                }
+            }));
+
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    // console.log(comments.map((co) => co._id))
     return (
         <div className='max-w-2xl mx-auto w-full p-3'>
             {
@@ -79,9 +109,11 @@ const CommentSection = ({ postId }) => {
                                         <p>Comments:</p>
                                         <div className='border border-gray-400 py-1 px-2 rounded-sm'><p>{comments.length}</p></div>
                                     </div>
-                                    {comments.map(mapcomment => (
-                                        <Comments comment={mapcomment} key={mapcomment._id} />
-                                    ))}
+                                    <div className='mt-8 '>
+                                        {comments.map(mapcomment => (
+                                            <Comments comment={mapcomment} key={mapcomment._id} onLike={handleLike} />
+                                        ))}
+                                    </div>
                                 </div>
 
                             </>)}

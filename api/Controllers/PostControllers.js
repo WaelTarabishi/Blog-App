@@ -125,6 +125,7 @@ const updatePost = async (req, res, next) => {
       },
       { new: true }
     );
+    updatedPost.save();
     res.status(200).json(updatedPost);
   } catch (err) {
     next(err);

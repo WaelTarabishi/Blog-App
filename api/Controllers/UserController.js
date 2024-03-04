@@ -48,7 +48,7 @@ const deleteUser = asyncHandler(async (req, res, next) => {
   }
 });
 const getUsers = async (req, res, next) => {
-  console.log(req.query);
+  // console.log(req.query);
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "You are not allowed to see all users"));
   }

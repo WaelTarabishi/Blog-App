@@ -8,7 +8,7 @@ import {
   updatePost,
 } from "../Controllers/PostControllers.js";
 router.post("/create", protect, createPost);
-router.get("/getposts", protect, getPosts);
+router.get("/getposts", getPosts);
 router.put("/update/:postId/:userId", protect, updatePost);
 router.delete("/deletepost/:postId/:userId", protect, deletePosts);
 export default router;

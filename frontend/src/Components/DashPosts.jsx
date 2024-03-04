@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { Table, Button, Modal, Spinner } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const DashPosts = () => {
     const { userInfo } = useSelector(state => state.auth)
+    const navigate = useNavigate()
     const [getposts, { isLoading }] = useGetpostsMutation()
     const [getpostsmore, { }] = useGetpostsmoreMutation()
     const [deletepost, { }] = useDeletepostMutation()
@@ -15,8 +17,10 @@ const DashPosts = () => {
     const [openModal, setOpenModal] = useState(false)
     const [postsNumber, setPostsNumber] = useState(0)
     const [loadShowMore, setLoadShowMore] = useState(false)
-
     const fetchPosts = async () => {
+        if (!userInfo.isAdmin) {
+            navigate("/dashboard?tab=profile")
+        }
         try {
             const res = await getposts().unwrap()
             // console.log(res)
