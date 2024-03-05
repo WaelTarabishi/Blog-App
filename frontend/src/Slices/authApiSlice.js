@@ -81,8 +81,8 @@ export const ApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getposts: builder.mutation({
-      query: () => ({
-        url: `${POST_URL}/getposts`,
+      query: (limitNumber) => ({
+        url: `${POST_URL}/getposts?limit=${limitNumber || 9}`,
         method: "GET",
       }),
     }),
@@ -143,6 +143,28 @@ export const ApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
       }),
     }),
+    editcomment: builder.mutation({
+      query: (commentdata) => {
+        const [commentId, data] = commentdata;
+        return {
+          url: `${COMMENT_URL}/editcomment/${commentId}`,
+          method: "PUT",
+          body: data,
+        };
+      },
+    }),
+    deletecomment: builder.mutation({
+      query: (commendId) => ({
+        url: `${COMMENT_URL}/deletecomment/${commendId}`,
+        method: "DELETE",
+      }),
+    }),
+    getallcomments: builder.mutation({
+      query: () => ({
+        url: `${COMMENT_URL}/getallcomments`,
+        method: "get",
+      }),
+    }),
   }),
 });
 
@@ -169,4 +191,7 @@ export const {
   useCreatcommentMutation,
   useGetpostcommentsMutation,
   useGetcommentlikesMutation,
+  useEditcommentMutation,
+  useDeletecommentMutation,
+  useGetallcommentsMutation,
 } = ApiSlice;

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '../Slices/authApiSlice';
 import { logout } from '../Slices/authSlice';
 import { toggelTheme } from '../Slices/themeSlice';
+import { FcFilm } from "react-icons/fc";
 const Header = () => {
     const dispatch = useDispatch();
     const [logOutApiCall] = useLogoutMutation()
@@ -54,6 +55,9 @@ const Header = () => {
                                 {userInfo.email}
                             </span>
                         </Dropdown.Header>
+                        <Link to={'/dashboard?tab=dash'}>
+                            <Dropdown.Item>Dashboard</Dropdown.Item>
+                        </Link>
                         <Link to={'/dashboard?tab=profile'}>
                             <Dropdown.Item>Profile</Dropdown.Item>
                         </Link>

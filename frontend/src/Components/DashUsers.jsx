@@ -27,12 +27,13 @@ const DashUsers = () => {
                 navigate("/dashboard?tab=profile")
             }
             const res = await getusers().unwrap()
-            setUsersNumber(res.length)
-            if (res.length < 9) {
+            console.log(res)
+            setUsersNumber(res.users.length)
+            if (usersNumber < 9) {
                 setShowMore(false)
             }
             // console.log(res)
-            setUsers(res)
+            setUsers(res.users)
         }
         fetchUsers()
     }, [userInfo._id])
@@ -64,7 +65,7 @@ const DashUsers = () => {
             console.log(err)
         }
     }
-
+    // console.log(usersNumber)
 
     return (
         <div className="table-auto overflow-x-scroll md:mx-auto my-10 px-4 sm:scrollbar-none   scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-700  w-full" >

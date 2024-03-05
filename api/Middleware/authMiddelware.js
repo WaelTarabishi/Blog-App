@@ -13,9 +13,9 @@ const protect = async (req, res, next) => {
       // console.log(req.user.id);
       // console.log(req.user._id);
       // console.log(token);
-      // console.log(req.user);
-      // console.log(req.body);
-      // console.log(req.query);
+      console.log(req.user);
+      console.log(req.body);
+      console.log(req.query);
       // console.log(req);
       next();
     } catch (error) {

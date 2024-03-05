@@ -5,8 +5,10 @@ import { Table, Button, Modal, Spinner } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import useCache from '../Hooks/useCache';
 const DashPosts = () => {
     const { userInfo } = useSelector(state => state.auth)
+    const { getData, setData } = useCache();
     const navigate = useNavigate()
     const [getposts, { isLoading }] = useGetpostsMutation()
     const [getpostsmore, { }] = useGetpostsmoreMutation()
@@ -17,25 +19,36 @@ const DashPosts = () => {
     const [openModal, setOpenModal] = useState(false)
     const [postsNumber, setPostsNumber] = useState(0)
     const [loadShowMore, setLoadShowMore] = useState(false)
+    // const [limitposts, setLimitPosts] = useState(9)
     const fetchPosts = async () => {
-        if (!userInfo.isAdmin) {
-            navigate("/dashboard?tab=profile")
+        if (!userInfo || !userInfo.isAdmin) {
+            navigate("/dashboard?tab=profile");
+            return;
         }
         try {
-            const res = await getposts().unwrap()
-            // console.log(res)
-            setPosts(res.posts)
-            setPostsNumber(res.posts.length)
-            if (res.posts.length < 9) {
-                setShowMore(false)
+            const cachedData = getData('postsData');
+            // console.log(cachedData)
+            if (cachedData) {
+                console.log('Data from cache:', cachedData);
+                setPosts(cachedData)
+            } else {
+                console.log('notfrom cache')
+                const res = await getposts().unwrap();
+                setPosts(res.posts);
+                setPostsNumber(res.posts.length);
+                setData('postsData', res.posts);
+
+                if (res.posts.length < 9) {
+                    setShowMore(false);
+                }
             }
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
     }
     useEffect(() => {
-        fetchPosts()
-    }, [userInfo._id])
+        fetchPosts();
+    }, [userInfo]);
     const showMoreHandle = async () => {
         setLoadShowMore(true)
         try {
@@ -66,7 +79,7 @@ const DashPosts = () => {
             console.log(err);
         }
     };
-    console.log(posts)
+    // console.log(posts)
     return (
         <div className="table-auto overflow-x-scroll md:mx-auto my-10 px-4 sm:scrollbar-none   scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-700  w-full" >
             {userInfo.isAdmin && posts.length > 0 ? (
@@ -84,7 +97,7 @@ const DashPosts = () => {
                         </Table.Head>
                         {
                             posts.map((post) => (
-                                <Table.Body className="divide-y items-center justify-center" key={post._id}>
+                                <Table.Body className="divide-y items-center justify-center h-24" key={post._id}>
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                         <Table.Cell>  {new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
                                         <Table.Cell>
@@ -151,15 +164,19 @@ const DashPosts = () => {
                         </button>
                     )}
                 </>)
-                : !isLoading && posts.length == 0 ? (<div className='flex justify-center items-center h-full text-xl font-semibold  '>There's no Posts right now</div>) :
-                    (<div className='flex justify-center items-center h-full gap-2'>
-                        <span>
-                            <Spinner color="info" size='md' aria-label="Info spinner example" />
-                        </span>
-                        <span className='text-xl font-semibold'>
-                            Loading...
-                        </span>
-                    </div>)
+                : !isLoading && posts.length == 0 ? (
+                    <div className='flex justify-center items-center h-full text-xl font-semibold  '>There's no Posts right now</div>)
+                    :
+                    (
+                        <div className='flex justify-center items-center h-full gap-2'>
+                            <span>
+                                <Spinner color="info" size='md' aria-label="Info spinner example" />
+                            </span>
+                            <span className='text-xl font-semibold'>
+                                Loading...
+                            </span>
+                        </div>
+                    )
             }
         </div >
     )

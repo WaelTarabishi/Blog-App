@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetpostbyslugMutation } from '../Slices/authApiSlice';
+import { useGetpostbyslugMutation, useGetpostsMutation } from '../Slices/authApiSlice';
 import { Alert, Button, FileInput, Select, TextInput, Spinner } from 'flowbite-react';
-import { CallToAction, CommentSection } from '../Components';
+import { CallToAction, CommentSection, PostCard } from '../Components';
 const PostPage = () => {
     const [getpostbyslug, { isLoading, fulfilledTimeStamp, isSuccess }] = useGetpostbyslugMutation()
+    const [getposts] = useGetpostsMutation()
     const [actualPost, setActualPost] = useState("")
+    const [recentPosts, setRecentPosts] = useState([])
+    const [limitnumber, setLimitNumber] = useState(3)
     const { postSlug } = useParams()
     useEffect(() => {
         const fetchPost = async () => {
@@ -15,6 +18,19 @@ const PostPage = () => {
         }
         fetchPost()
     }, [postSlug])
+    useEffect(() => {
+        try {
+            const fetchRecentPosts = async () => {
+                const res = await getposts(limitnumber).unwrap()
+                // console.log(res, "this is recent")
+                setRecentPosts(res.posts)
+            }
+            fetchRecentPosts()
+        } catch (err) {
+            console.log(err)
+        }
+    }, [])
+    console.log(recentPosts)
     // console.log(actualPost._id)
     return (
         <div>
@@ -37,7 +53,7 @@ const PostPage = () => {
                         <Link to={`/search?catergory=${actualPost && actualPost.category}`} className='self-center mt-5'>
                             <Button color='gray' pill size="xs" className='text-center pb-1'>{actualPost && actualPost.category}</Button>
                         </Link>
-                        <img src={actualPost && actualPost.image} className=' mt-10 p-3 max-h-[600px] w-full object-cover' />
+                        <img src={actualPost && actualPost.image} className=' mt-10 p-2 max-h-[600px] w-full object-cover border border-teal-500 rounded-md ' />
                         <div className='  flex justify-between p-3 border-b border-slate-500  mx-auto w-full max-w-2xl text-xs '>
                             <span>{new Date(actualPost && (actualPost.createdAt)).toLocaleDateString()}</span>
                             <span className='italic'>{actualPost && ((actualPost.content.length / 1000).toFixed(0))} mins read</span>
@@ -45,7 +61,14 @@ const PostPage = () => {
                         <div className='mx-auto w-full max-w-2xl p-2 post-content ' dangerouslySetInnerHTML={{ __html: actualPost && (actualPost.content) }} />
                         <div className='max-w-4xl mx-auto w-full mt-6'><CallToAction /></div>
                         {fulfilledTimeStamp && (<CommentSection postId={actualPost && (actualPost._id)} />)}
-
+                        <div className='flex flex-col  justify-center items-center mb-5'>
+                            <h1 className='text-xl  mt-5'>Recent articales</h1>
+                            <div className='flex  flex-wrap  items-center justify-center gap-5 '>
+                                {recentPosts && recentPosts.map(post => (
+                                    <PostCard key={post._id} post={post} />
+                                ))}
+                            </div>
+                        </div>
                     </main>
                 )
             }

@@ -54,7 +54,7 @@ const getUsers = async (req, res, next) => {
   }
 
   try {
-    console.log(req.query.startIndex);
+    // console.log(req.query.startIndex);
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.sort == "asc" ? 1 : -1;
@@ -75,8 +75,9 @@ const getUsers = async (req, res, next) => {
     const lastMonthUsers = await User.countDocuments({
       createdAt: { $gte: oneMonthAgo },
     });
-
-    res.status(200).json(users, totalUsers, lastMonthUsers);
+    // const data = {users,totalUsers,lastMonthUsers}
+    // console.log(data);
+    res.status(200).json({ users, totalUsers, lastMonthUsers });
   } catch (err) {
     next(err);
   }
