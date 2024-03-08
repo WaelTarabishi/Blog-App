@@ -47,6 +47,7 @@ const getPosts = async (req, res, next) => {
     // console.log(req.query);
     // console.log(req);
     // console.log(req.query.startIndex);
+    console.log(req.query);
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.order === "asc" ? 1 : -1;
@@ -79,7 +80,7 @@ const getPosts = async (req, res, next) => {
     const lastMonthPosts = await Post.countDocuments({
       createdAt: { $gte: oneMonthAgo },
     });
-
+    console.log(posts);
     res.status(200).json({
       posts,
       totalPosts,
@@ -120,6 +121,7 @@ const updatePost = async (req, res, next) => {
           title: req.body.title,
           content: req.body.content,
           category: req.body.category,
+          image: req.body.image,
           slug,
         },
       },

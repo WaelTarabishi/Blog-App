@@ -17,3 +17,4 @@ export { default as CommentSection } from "./CommentSection";
 export { default as Comments } from "./Comments";
 export { default as ScrollToTop } from "./ScrollToTop";
 export { default as PostCard } from "./PostCard";
+export { default as UsersProfile } from "./UsersProfile";

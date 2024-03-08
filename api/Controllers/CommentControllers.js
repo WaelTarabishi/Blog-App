@@ -47,8 +47,10 @@ const likeComments = async (req, res, next) => {
   }
 };
 const editComments = async (req, res, next) => {
+  console.log(req.params, "this is params");
+
   const comment = await Comment.findById(req.params.commentId);
-  console.log(req.body);
+  console.log(req.body, "this is body");
   if (!comment) {
     return next(errorHandler(404, "Comment not Found"));
   }
@@ -109,6 +111,16 @@ const getAllComments = async (req, res, next) => {
     console.log(err);
   }
 };
+const getusercomments = async (req, res, next) => {
+  try {
+    const comments = await Comment.find({ userId: req.params.userId }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json(comments);
+  } catch (err) {
+    next(err);
+  }
+};
 export {
   createComment,
   getPostComments,
@@ -116,4 +128,5 @@ export {
   editComments,
   deleteComments,
   getAllComments,
+  getusercomments,
 };

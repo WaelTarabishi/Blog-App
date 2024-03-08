@@ -80,9 +80,9 @@ const CreatePost = () => {
                     <TextInput type='text' placeholder='Title' className='flex-1 ' onChange={(e) => { setFormData({ ...formData, title: e.target.value }) }} />
                     <Select className='flex-[0.7]' onChange={(e) => { setFormData({ ...formData, category: e.target.value }) }}>
                         <option value="uncatergorized">Select a category</option>
-                        <option value="Javascript">JavaScript</option>
-                        <option value="Reactjs">ReactJs</option>
-                        <option value="Nextjs">NextJs</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="reactjs">ReactJs</option>
+                        <option value="nextjs">NextJs</option>
                     </Select>
                 </div>
                 <div className='flex gap-4 items-center justify-between border-4 border-teal-400 border-dotted p-2'>
@@ -95,7 +95,7 @@ const CreatePost = () => {
                 </div>
                 {imageUploadError && (<Alert icon={HiInformationCircle} color="failure">{imageUploadError}</Alert>)}
                 {formData.image && (<img src={formData.image} alt='upload' className='w-full  h-[500px] object-cover'></img>)}
-                <ReactQuill theme='snow' placeholder='' className=' h-72  dark:text-white mb-12 p' required onChange={(value) => { setFormData({ ...formData, content: value }) }} />
+                <ReactQuill theme='snow' placeholder='' className=' h-72  dark:text-white mb-12 post-content' required onChange={(value) => { setFormData({ ...formData, content: value }) }} />
                 <Button type='submit' gradientMonochrome="teal" className='' onClick={publishHandleSubmit} disabled={isLoading || imageUploadProgress} >{isLoading ? "Loading..." : "Publish"}</Button>
                 {isError && (
                     <Alert className='mt-1 mb-6' icon={HiInformationCircle} color="failure">

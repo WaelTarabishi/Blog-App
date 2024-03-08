@@ -4,6 +4,7 @@
 
 body {
   height: 100vh;
+  @apply transition-colors duration-200;
 }
 
 .post-content p {
@@ -38,4 +39,28 @@ body {
 .dark .post-content a:hover {
   color: rgb(199, 19, 40);
   text-decoration: underline;
+}
+
+/* Styling for React Quill editor content */
+.ql-editor {
+  font-family: Arial, sans-serif; /* Choose a readable font family */
+  font-size: 16px; /* Set a comfortable font size */
+  line-height: 1.6; /* Increase line height for readability */
+  color: #333; /* Choose a dark color for text */
+  padding: 20px; /* Add padding for better spacing */
+}
+
+/* Styling for headings in React Quill editor */
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3 {
+  font-weight: bold; /* Make headings bold */
+  margin-bottom: 0.5em; /* Add spacing below headings */
+}
+
+/* Styling for lists in React Quill editor */
+.ql-editor ul,
+.ql-editor ol {
+  margin-left: 1.5em; /* Indent lists for better hierarchy */
+  padding-left: 0; /* Reset default padding */
 }

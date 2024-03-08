@@ -1,3 +1,4 @@
 import js from "./js.png";
+import Nextjs from "./Nextjs.jpg";
 
-export { js };
+export { js, Nextjs };

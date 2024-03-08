@@ -86,6 +86,12 @@ export const ApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getpostsfromsearchterm: builder.mutation({
+      query: (searchTerm) => ({
+        url: `${POST_URL}/getposts?${searchTerm}`,
+        method: "GET",
+      }),
+    }),
     getpost: builder.mutation({
       query: (idTogetPost) => ({
         url: `${POST_URL}/getposts?postId=${idTogetPost}`,
@@ -144,15 +150,13 @@ export const ApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     editcomment: builder.mutation({
-      query: (commentdata) => {
-        const [commentId, data] = commentdata;
-        return {
-          url: `${COMMENT_URL}/editcomment/${commentId}`,
-          method: "PUT",
-          body: data,
-        };
-      },
+      query: (data, commendId) => ({
+        url: `${COMMENT_URL}/editcomment/${commendId}`,
+        method: "PUT",
+        body: data,
+      }),
     }),
+
     deletecomment: builder.mutation({
       query: (commendId) => ({
         url: `${COMMENT_URL}/deletecomment/${commendId}`,
@@ -162,7 +166,19 @@ export const ApiSlice = apiSlice.injectEndpoints({
     getallcomments: builder.mutation({
       query: () => ({
         url: `${COMMENT_URL}/getallcomments`,
-        method: "get",
+        method: "GET",
+      }),
+    }),
+    getcommentsmore: builder.mutation({
+      query: (starterIndex) => ({
+        url: `${COMMENT_URL}/getallcomments?&startIndex=${starterIndex}`,
+        method: "GET",
+      }),
+    }),
+    getusercomments: builder.mutation({
+      query: (userId) => ({
+        url: `${COMMENT_URL}/getusercomments/${userId}`,
+        method: "GET",
       }),
     }),
   }),
@@ -187,6 +203,7 @@ export const {
   useGetpostsmoreMutation,
   useDeletepostMutation,
   useGetpostMutation,
+  useGetpostsfromsearchtermMutation,
 
   useCreatcommentMutation,
   useGetpostcommentsMutation,
@@ -194,4 +211,6 @@ export const {
   useEditcommentMutation,
   useDeletecommentMutation,
   useGetallcommentsMutation,
+  useGetcommentsmoreMutation,
+  useGetusercommentsMutation,
 } = ApiSlice;

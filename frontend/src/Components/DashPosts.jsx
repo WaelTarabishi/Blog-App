@@ -14,7 +14,7 @@ const DashPosts = () => {
     const [getpostsmore, { }] = useGetpostsmoreMutation()
     const [deletepost, { }] = useDeletepostMutation()
     const [posts, setPosts] = useState([])
-    const [showMore, setShowMore] = useState(true)
+    const [showMore, setShowMore] = useState(false)
     const [postIdToDelete, setPostIdToDelete] = useState('')
     const [openModal, setOpenModal] = useState(false)
     const [postsNumber, setPostsNumber] = useState(0)
@@ -41,6 +41,10 @@ const DashPosts = () => {
                 if (res.posts.length < 9) {
                     setShowMore(false);
                 }
+                else {
+                    setShowMore(true)
+                }
+
             }
         } catch (err) {
             console.log(err);
@@ -50,20 +54,23 @@ const DashPosts = () => {
         fetchPosts();
     }, [userInfo]);
     const showMoreHandle = async () => {
-        setLoadShowMore(true)
+        setLoadShowMore(true);
         try {
-            const res = await getpostsmore(postsNumber)
-            console.log(res.data.posts)
+            const res = await getpostsmore(postsNumber);
+            console.log(res.data.posts);
+
             setPosts((prev) => [...prev, ...res.data.posts]);
+            setPostsNumber(prevNumber => prevNumber + res.data.posts.length); // Increment postsNumber
+
             if (res.data.posts.length < 9) {
                 setShowMore(false);
             }
-            setLoadShowMore(false)
-
+            setLoadShowMore(false);
         } catch (err) {
             console.log(err);
         }
     }
+
     const onClickDeletePostHandler = async () => {
         try {
             if (userInfo && userInfo._id) {

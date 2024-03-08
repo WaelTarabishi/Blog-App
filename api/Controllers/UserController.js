@@ -41,7 +41,10 @@ const deleteUser = asyncHandler(async (req, res, next) => {
     next(errorHandler((403, "You are now allowed to delete this user")));
   }
   try {
-    await User.findOneAndDelete(req.param._id);
+    console.log(req.params._id, "params id to delete");
+    // Assuming that _id is the unique identifier for users
+    // Ensure that only users can be deleted, not the admin user
+    await User.findOneAndDelete({ _id: req.params._id, isAdmin: false });
     res.status(200).json({ message: "User has been deleted" });
   } catch (err) {
     next(err);

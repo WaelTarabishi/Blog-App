@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGetusersMutation, useGetpostsMutation, useGetallcommentsMutation } from '../Slices/authApiSlice';
-import { HiArrowNarrowUp, HiOutlineUserGroup, HiAnnotation, HiDocumentText } from 'react-icons/hi';
+import { HiArrowNarrowUp, HiOutlineUserGroup, HiAnnotation, HiDocumentText, HiArrowNarrowDown } from 'react-icons/hi';
+
 import { Button, Table, Spinner } from 'flowbite-react';
 const Dash = () => {
     const { userInfo } = useSelector(state => state.auth)
@@ -74,7 +75,7 @@ const Dash = () => {
                                     <h3 className='text-gray-500 text-md uppercase'>Total Users</h3 >
                                     <p className='text-2xl'>{totalUsers}</p>
                                     <div className='flex gap-2 text-sm'>
-                                        <span className='text-green-500 flex items-center '><HiArrowNarrowUp />{lastMonthUsers}</span>
+                                        {lastMonthUsers === 0 ? (<span className='text-red-500 flex items-center '><HiArrowNarrowDown />0</span>) : (<><span className='text-green-500 flex items-center '><HiArrowNarrowUp />{lastMonthUsers}</span></>)}
                                         <div className='text-gray-500'>Last month</div>
                                     </div>
                                 </div >
@@ -88,7 +89,7 @@ const Dash = () => {
                                     <h3 className='text-gray-500 text-md uppercase'>Total Comments</h3>
                                     <p className='text-2xl'>{totalComments}</p>
                                     <div className='flex gap-2 text-sm'>
-                                        <span className='text-green-500 flex items-center '><HiArrowNarrowUp />{lastMonthComments}</span>
+                                        {lastMonthComments === 0 ? (<span className='text-red-500 flex items-center '><HiArrowNarrowDown />0</span>) : (<><span className='text-green-500 flex items-center '><HiArrowNarrowUp />{lastMonthComments}</span></>)}
                                         <div className='text-gray-500'>Last month</div>
                                     </div>
                                 </div>
@@ -102,7 +103,7 @@ const Dash = () => {
                                     <h3 className='text-gray-500 text-md uppercase'>Total Posts</h3>
                                     <p className='text-2xl'>{totalPosts}</p>
                                     <div className='flex gap-2 text-sm'>
-                                        <span className='text-green-500 flex items-center '><HiArrowNarrowUp />{lastMonthPosts}</span>
+                                        {lastMonthPosts === 0 ? (<span className='text-red-500 flex items-center '><HiArrowNarrowDown />0</span>) : (<><span className='text-green-500 flex items-center '><HiArrowNarrowUp />{lastMonthPosts}</span></>)}
                                         <div className='text-gray-500'>Last month</div>
                                     </div>
                                 </div>

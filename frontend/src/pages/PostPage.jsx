@@ -33,7 +33,7 @@ const PostPage = () => {
     console.log(recentPosts)
     // console.log(actualPost._id)
     return (
-        <div>
+        <div className=' '>
             {isLoading & !isSuccess ? (
                 <div className='flex justify-center items-center h-screen gap-2'>
                     <span>
@@ -58,7 +58,7 @@ const PostPage = () => {
                             <span>{new Date(actualPost && (actualPost.createdAt)).toLocaleDateString()}</span>
                             <span className='italic'>{actualPost && ((actualPost.content.length / 1000).toFixed(0))} mins read</span>
                         </div>
-                        <div className='mx-auto w-full max-w-2xl p-2 post-content ' dangerouslySetInnerHTML={{ __html: actualPost && (actualPost.content) }} />
+                        <div className='mx-auto w-full max-w-2xl p-2 post-content flex flex-wrap overflow-clip  ' dangerouslySetInnerHTML={{ __html: actualPost && (actualPost.content) }} />
                         <div className='max-w-4xl mx-auto w-full mt-6'><CallToAction /></div>
                         {fulfilledTimeStamp && (<CommentSection postId={actualPost && (actualPost._id)} />)}
                         <div className='flex flex-col  justify-center items-center mb-5'>

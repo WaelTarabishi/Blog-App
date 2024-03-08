@@ -1,24 +1,40 @@
-import { useGetallcommentsMutation, useDeletecommentMutation } from '../Slices/authApiSlice';
+import {
+    useGetallcommentsMutation, useDeletecommentMutation, useGetcommentsmoreMutation
+} from '../Slices/authApiSlice';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { Table, Button, Modal, Spinner } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { UsersProfile } from './';
 const DashComments = () => {
     const [getallcomments, { isLoading }] = useGetallcommentsMutation()
+    const [getcommentsmore] = useGetcommentsmoreMutation()
     const [deletecomment] = useDeletecommentMutation()
+    const [commentsNumber, setCommentsNumber] = useState(0)
+    const [usersNumber, setUsersNumber] = useState(0)
+
     const { userInfo } = useSelector(state => state.auth)
     const [comments, setComments] = useState([])
     const [commentToDelete, setCommentIdToDelete] = useState('')
     const [openModal, setOpenModal] = useState(false)
+    const [showMore, setShowMore] = useState(false)
+    const [loadShowMore, setLoadShowMore] = useState(false)
     const fetchComments = async () => {
         if (!userInfo.isAdmin) {
             navigate("/dashboard?tab=profile")
         }
         try {
             const res = await getallcomments().unwrap()
-            console.log(res)
+            // console.log(res)
             setComments(res.comments)
+            setCommentsNumber(res.comments.length);
+            if (res.comments.length < 9) {
+                setShowMore(false)
+            }
+            else {
+                setShowMore(true)
+            }
         }
         catch (err) {
             console.log(err)
@@ -32,7 +48,24 @@ const DashComments = () => {
         setComments((prev) => prev.filter((comment) => comment._id !== commentToDelete));
         setOpenModal(false)
         setCommentIdToDelete("")
+    }
+    const showMoreHandle = async () => {
+        setLoadShowMore(true)
+        try {
+            const res = await getcommentsmore(commentsNumber)
+            console.log(res.data.comments)
+            setComments((prev) => [...prev, ...res.data.comments]);
+            setCommentsNumber(prevNumber => prevNumber + res.data.comments.length); // Increment postsNumber
 
+            if (res.data.comments.length < 9) {
+                setShowMore(false);
+            }
+            setLoadShowMore(false);
+
+        } catch (err) {
+            console.log(err)
+            setLoadShowMore(false)
+        }
     }
     console.log(commentToDelete)
     return (
@@ -55,7 +88,6 @@ const DashComments = () => {
                                 <Table.Body className="divide-y items-center justify-center h-24" key={comment._id}>
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                         <Table.Cell>  {new Date(comment.updatedAt).toLocaleDateString()}</Table.Cell>
-
                                         <Table.Cell>
                                             {comment.content}
                                         </Table.Cell>
@@ -68,7 +100,9 @@ const DashComments = () => {
                                             </Link>
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {comment.userId}
+                                            <Link to={`/user-profile/${comment.userId}`}>
+                                                {comment.userId}
+                                            </Link>
                                         </Table.Cell>
                                         <Table.Cell>
                                             <span
@@ -82,6 +116,7 @@ const DashComments = () => {
                                                 Delete
                                             </span>
                                         </Table.Cell>
+
                                     </Table.Row>
                                 </Table.Body>
                             ))
@@ -106,11 +141,11 @@ const DashComments = () => {
                             </div>
                         </Modal.Body>
                     </Modal>
-                    {/* {showMore && (
+                    {showMore && (
                         <button className={`w-full text-center text-blue-500 mt-2 cursor-pointer hover:text-blue-400`} onClick={showMoreHandle} disabled={loadShowMore}  >
                             {loadShowMore ? (<Spinner size="md" />) : (<span>Show more</span>)}
                         </button>
-                    )} */}
+                    )}
                 </>)
                 : !isLoading && comments.length == 0 ? (<div className='flex justify-center items-center h-full text-xl font-semibold  '>There's no Comments right now</div>) :
                     (<div className='flex justify-center items-center h-full gap-2'>

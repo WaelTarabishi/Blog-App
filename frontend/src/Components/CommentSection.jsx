@@ -72,12 +72,13 @@ const CommentSection = ({ postId }) => {
             console.log(err);
         }
     };
-    const handleEdit = async (commente, editedContent) => {
-        setComments((comments.map((c) => {
-            c._id === commente._id ? { ...c, content: editedContent } : c
-        }
-        )))
-    }
+    const handleEdit = async (comment, editedContent) => {
+        setComments(
+            comments.map((c) =>
+                c._id === comment._id ? { ...c, content: editedContent } : c
+            )
+        );
+    };
     const handleDelete = async (commentId) => {
         setOpenModal(false)
         try {
@@ -92,6 +93,7 @@ const CommentSection = ({ postId }) => {
 
         } catch (err) { console.log(err) }
     }
+    // console.log(comments)
     return (
         <div className='max-w-2xl mx-auto w-full p-3'>
             {
@@ -99,8 +101,7 @@ const CommentSection = ({ postId }) => {
                     <div className='flex flex-row items-center gap-1 my-5 text-gray-500 text-sm ' >
                         <p>Signed in as :</p>
                         <img src={userInfo.profilePicture} className='h-5 w-5 object-cover rounded-full' alt="UserPicture" />
-                        <Link to={'/dashboard?tab=profile'} className='text-xs  text-cyan-600 hover:underline'>
-                            @{userInfo.name}
+                        <Link to={'/dashboard?tab=profile'} className='text-xs  text-cyan-600 hover:underline'>@{userInfo.name}
                         </Link>
                     </div >
                 ) : (

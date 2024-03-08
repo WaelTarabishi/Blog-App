@@ -27,9 +27,10 @@ const DashUsers = () => {
                 navigate("/dashboard?tab=profile")
             }
             const res = await getusers().unwrap()
-            console.log(res)
+            // console.log(res)
+            // console.log(res.users.length)
             setUsersNumber(res.users.length)
-            if (usersNumber < 9) {
+            if (res.users.length < 9) {
                 setShowMore(false)
             }
             // console.log(res)
@@ -42,11 +43,13 @@ const DashUsers = () => {
         try {
             // console.log("Initiating user deletion...");
             console.log("User to delete:", userToDelete);
-            await deleteUser([userToDelete, userInfo._id]).unwrap();
-            // console.log("User deleted successfully.");
-            setUsers((prev) => prev.filter((user) => user._id !== userToDelete));
-            setOpenModal(false);
-            setUserToDelete("")
+            if (userToDelete && userInfo._id) {
+                await deleteUser([userToDelete, userInfo._id]).unwrap();
+                // console.log("User deleted successfully.");
+                setUsers((prev) => prev.filter((user) => user._id !== userToDelete));
+                setOpenModal(false);
+                setUserToDelete("")
+            }
         } catch (err) {
             console.log(err)
         }
@@ -55,18 +58,22 @@ const DashUsers = () => {
         setLoadShowMore(true)
         try {
             const res = await getmoreusers(usersNumber)
-            setUsers(prev => [...prev, ...res.data])
+            console.log(res)
+            setUsers(prev => [...prev, ...res.data.users])
+            setUsersNumber(prevNumber => prevNumber + res.data.users.length); // Increment postsNumber
+
             // console.log(res.data)
-            if (res.data.length < 9) {
+            if (res.data.users.length < 9) {
                 setShowMore(false)
             }
+            setLoadShowMore(false);
 
         } catch (err) {
             console.log(err)
         }
     }
     // console.log(usersNumber)
-
+    console.log(userToDelete)
     return (
         <div className="table-auto overflow-x-scroll md:mx-auto my-10 px-4 sm:scrollbar-none   scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-700  w-full" >
             {userInfo.isAdmin && users.length > 0 ? (
@@ -87,8 +94,9 @@ const DashUsers = () => {
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                         <Table.Cell>  {new Date(user.updatedAt).toLocaleDateString()}</Table.Cell>
                                         <Table.Cell>
-
-                                            <LazyLoadImage src={user.profilePicture} className=' w-16 h-full bg-gray-500 object-contain rounded-full' />
+                                            <Link to={`/user-profile/${user._id}`}>
+                                                <LazyLoadImage src={user.profilePicture} className=' w-16 h-full bg-gray-500 object-contain rounded-full' />
+                                            </Link>
                                         </Table.Cell>
                                         <Table.Cell>
                                             <span className='font-medium text-gray-900 dark:text-white '>
