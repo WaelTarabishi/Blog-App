@@ -25,9 +25,9 @@ app.use("/api/user", UserRoute);
 app.use("/api/post", PostRoute);
 app.use("/api/comment", CommentRoute);
 
-app.use(express.static(path.join(__dirname, "/clinet/dist")));
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
