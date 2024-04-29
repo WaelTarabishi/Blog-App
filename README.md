@@ -1,5 +1,26 @@
 # MERN Blog App 📝
 
+
+![admin dashboard](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/4a0b5cc5-5c98-47c9-9c1b-914777b50d8f)
+
+![admin dashboard](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/ce3be82a-6881-43e5-9d6e-bd6933ef747e)
+
+![Posts](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/b75c7a98-2de6-4d61-b6f5-549642aeb5e8)
+
+![post](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/53e5b918-9799-48a7-b32f-b0648e788e78)
+
+![alsoo](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/107053be-b506-4b71-9a3e-8063c2f346a4)
+
+![see comments](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/8a4a8505-078f-402b-b1f1-44809ad3da08)
+
+![see posts](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/fb8a08a4-4c60-4e2f-be26-64774b532ab0)
+
+![see users](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/305a8074-3ab8-4d65-90d1-05e1ae9c3b8f)
+
+![add comments](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/91f65f71-1335-4fa8-8d18-1541330155ca)
+
+
+
 Welcome to the MERN Blog App, a full-stack blog application built with the MERN stack (MongoDB, Express.js, React.js, Node.js). This project provides a platform for users to create, view, and interact with blog posts.
 
 ## Features ✨
