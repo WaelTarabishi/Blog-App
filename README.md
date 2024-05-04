@@ -20,7 +20,6 @@
 
 ![add comments](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/91f65f71-1335-4fa8-8d18-1541330155ca)
 
-![search29)](https://github.com/WaelTarabishi/MERN-Blog-Application/assets/110033974/1ecea455-a74a-47de-9f97-437afb0824ac)
 
 
 Welcome to the MERN Blog App, a full-stack blog application built with the MERN stack (MongoDB, Express.js, React.js, Node.js). This project provides a platform for users to create, view, and interact with blog posts.
